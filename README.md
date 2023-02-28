@@ -18,7 +18,7 @@ product code.
 The  TMS27C512  series  are  65 536  by  8-bit(524 288-bit),   
 ultraviolet (UV) light erasable, electrically programmable read-only  memories.
 
-The version 3.0 (actually on the drawing board) is desgined with the famous 8-bit microprocessor Zilog Z80 
+The version 3.0 (still on the drawing board) is desgined with the famous 8-bit microprocessor Zilog Z80 
 microprocessor to allow the recognition of many type of EPROM memories. 
 
 
