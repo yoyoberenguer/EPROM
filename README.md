@@ -4,6 +4,8 @@
 The EPROMs programmer circuit proposed in this Electronic article is designed to flash 
 EPROMs memories (read-only memory whose contents can be erased by ultraviolet light 
 or other means and reprogrammed using a pulsed voltage) such as the memory chip SMT27C256B from Texas instrument. 
+
+
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/27C256.jpg)
 
 The chip SMT27C256B is composed of 256K bit electrically Programmable Read Only Memory (EPROM).  
