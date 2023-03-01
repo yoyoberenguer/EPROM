@@ -21,7 +21,7 @@ to allow the recognition of many other type and sizes of EPROM memories.
 
 
 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/schematic1_version1_low_level.PNG?raw=true)
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/schematic1_version1.PNG?raw=true)
 
 
 
