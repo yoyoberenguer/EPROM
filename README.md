@@ -67,19 +67,34 @@ Output DC voltage 12.5V to be compatible with the electronic signature mode
 
 
 ### Programming pulse 
+
 The EPROM SMT27C256 datasheet requires 95 - 100 micro seconds for the chip Enable program pulse width to write
 a single word. This value may vary for each memory type and device operation mode.
 To comply with a larger number of products, the writing pulse width will be variable to match 
 the component programming requirement.
+
 As the minimal programming pulse cannot be below 95us this will give us a reference for the theorital maximum 
-frequency that can be delivered to the EPROM to remain within its functional caracteristics. 
-Based on the minimal period of 95us the maximum frequency is around 10Khz (not taking into account the propagation delays
-and the rise and fall times of the signals) for the chip SMT27C256.
+programming pulse frequency that can be delivered to the EPROM to remain within its functional caracteristics. 
+
+Based on consecutives minimal period of 95us the maximum frequency is around 10Khz (without taking into account 
+the propagation delays and the rise and fall times of the signals) for the chip SMT27C256.
+
 with a fixed time of 95us per word, the best timing for programming the SMT27C256 would be 32768 * 100us ≈ 3.2 seconds
-This is by far an extrapolation and to stay within a safe margin, we will use a lower frequency to take into account the 
-rise and fall times of each signals and the various chip access time (data bus and address line)
+This is by far an extrapolation and to stay within a safe margin for reliability, we will use a lower frequency to take
+into account the rise and fall times of each signals and the various chip access time (data bus and address line)
+
+Note that the chp TMS27C512 and SMT27C512 have respectively programming modes call **SNAP! Pulse programming** & **PRESTO II Programming Algorithm**
+
+Programming with PRESTO II involves the application of a sequence of 100μs program pulses to each byte until a correct verify occurs. 
+During programming and verify operation, a MARGIN MODE circuit is automatically activated in order to guarantee that each cell is programmed with enough
+margin. No overprogram pulse is applied since the verify in MARGIN MODE provides necessary margin to each programmed cell.
+
+
+
 
 Considerations:
+
 ```
 Programming pulse must be adjustable and within component specification (95 - 100 us)
+The programming pulse is an active low signal impulse of few micro-secondes 5 - 0v sent to the pin NOT E (pin 20)
 ```
