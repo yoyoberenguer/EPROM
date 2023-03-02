@@ -66,6 +66,8 @@ Output DC voltage 12.5V to be compatible with the electronic signature mode
 ```
 
 
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/DC2DC_converter.PNG?raw=true)
+
 ### Programming pulse 
 
 The EPROM SMT27C256 datasheet requires 95 - 100 micro seconds for the chip Enable program pulse width to write
