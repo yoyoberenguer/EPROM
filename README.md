@@ -29,7 +29,7 @@ to allow the recognition of many other type and sizes of EPROM memories.
 The DC to DC converter we be exclusively used for the device programming mode.
 It will supply a steady DC voltage (VPP) range 12.75v ±0.25v to set the EPROM is programming
 mode. Please refer to the datasheet for the absolute VPP voltage values (-2V to 14V for the SMT27C256).
-The reading mode requires 100uA on pin 1 while the programming mode requires 50mA maximum. 
+The reading mode requires 100uA on pin 1 and the programming mode requires 50mA maximum. 
 These current's values (IPP) and the voltage range (VPP) will set the DC to DC step up converter caracteristics 
 for the programming operational mode.
 The DC to DC converter can also be used optionally for the electronic signature mode by supplying a voltage on 
@@ -38,11 +38,15 @@ A9 (pin 24) of the SMT27C256
 To activate the ES mode, the programming equipment must force 11.5V to 12.5V on address line A9 of the
 M27C256B, with V CC = V PP = 5V. Two identifier bytes may then be sequenced from the device out-puts by toggling 
 address line A0 from V IL to V IH . All other address lines must be held at V IL during Electronic Signature mode. 
-Byte 0 (A0 = V IL ) rep-resents the manufacturer code and byte 1 (A0 = V IH ) the device identifier code. 
+Byte 0 (A0 = VIL ) rep-resents the manufacturer code and byte 1 (A0 = V IH ) the device identifier code. 
 For the ST-Microelectronics M27C256B, these two identifier bytes are given in Table 4 and can be read-out on
 outputs Q7 to Q0
 
 consideration: 
+A9 (pin 29) DC voltage must not exceed –2 to 13.5
+VPP (pin 1) DC voltage must not exceed -2  to 14
+Minimum DC current of 100uA and maximum current 50mA
+
 
 
 ### Programming pulse 
@@ -50,3 +54,5 @@ The EPROM SMT27C256 datasheet requires 95 - 100 micro seconds for the chip Enabl
 a single word. This value may vary for each memory type and device operation mode available.
 To comply with a larger number of products, we will have to be able to modulate the writing pulse width to match 
 the component programming requirement.
+Considerations:
+Programming pulse must be variable and within component specification (95 - 100 us)
