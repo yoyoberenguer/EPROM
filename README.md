@@ -100,3 +100,6 @@ Considerations:
 Programming pulse must be adjustable and within component specification (95 - 100 us)
 The programming pulse is an active low signal impulse of few micro-secondes 5 - 0v sent to the pin NOT E (pin 20)
 ```
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/PulseGenerator2.0.PNG?raw=true)
+
