@@ -34,6 +34,11 @@ version LT1073CN8 does not have these resistors and will be included in our proj
 The advantage of the LT1073CN is the operating voltage range provided from 1V to 30V, the low battery feature 
 detection and the output current limiting.
 
+This chip works with a wide range of batteries voltage sources such as 1.5V AA alkaline or 
+lithium battery composing a source voltage within 1.5 - 5.5v. 
+In our case, The DC to DC step up converter will be used with a +5V source voltage delivering
+a voltage arround 13V with a maximum current of 130mA.
+
 The DC to DC converter we be exclusively used for the device programming mode.
 It will supply a steady DC voltage (VPP) range 12.75v ±0.25v to set the EPROM is programming
 mode. During the programming mode the data bus Q0 - Q7 is placed in DATA IN mode  
@@ -56,6 +61,8 @@ DC to DC converter considerations:
 A9 (pin 29) DC voltage must not exceed –2 to 13.5
 VPP (pin 1) DC voltage must not exceed -2  to 14
 Minimum DC current of 100uA and maximum current 50mA
+Source DC voltage +5V 
+Output DC voltage 12.5V to be compatible with the electronic signature mode
 ```
 
 
@@ -64,8 +71,15 @@ The EPROM SMT27C256 datasheet requires 95 - 100 micro seconds for the chip Enabl
 a single word. This value may vary for each memory type and device operation mode.
 To comply with a larger number of products, the writing pulse width will be variable to match 
 the component programming requirement.
+As the minimal programming pulse cannot be below 95us this will give us a reference for the theorital maximum 
+frequency that can be delivered to the EPROM to remain within its functional caracteristics. 
+Based on the minimal period of 95us the maximum frequency is around 10Khz (not taking into account the propagation delays
+and the rise and fall times of the signals) for the chip SMT27C256.
+with a fixed time of 95us per word, the best timing for programming the SMT27C256 would be 32768 * 100us ≈ 3.2 seconds
+This is by far an extrapolation and to stay within a safe margin, we will use a lower frequency to take into account the 
+rise and fall times of each signals and the various chip access time (data bus and address line)
 
 Considerations:
 ```
-Programming pulse must be variable and within component specification (95 - 100 us)
+Programming pulse must be adjustable and within component specification (95 - 100 us)
 ```
