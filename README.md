@@ -19,6 +19,7 @@ light erasable, electrically programmable read-only  memories.
 The version 3.0 (still on the drawing board) will be desgin with the 8-bit microprocessor Zilog Z80 
 to allow the recognition of many other type and sizes of EPROM memories. 
 
+Synopsis
 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/schematic1_version1.PNG?raw=true)
