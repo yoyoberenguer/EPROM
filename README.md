@@ -56,14 +56,18 @@ Byte 0 (A0 = VIL ) rep-resents the manufacturer code and byte 1 (A0 = VIH ) the 
 For the ST-Microelectronics M27C256B, these two identifier bytes are given in Table 4 and can be read-out on
 outputs Q7 to Q0
 
-DC to DC converter considerations: 
-```
+**DC to DC converter considerations:**
+
 A9 (pin 29) DC voltage must not exceed –2 to 13.5
+
 VPP (pin 1) DC voltage must not exceed -2  to 14
+
 Minimum DC current of 100uA and maximum current 50mA
+
 Source DC voltage +5V 
+
 Output DC voltage 12.5V to be compatible with the electronic signature mode
-```
+
 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/DC2DC_converter.PNG?raw=true)
@@ -96,12 +100,13 @@ margin. No overprogram pulse is applied since the verify in MARGIN MODE provides
 
 
 
-Considerations:
+**Considerations:**
 
-```
+
 Programming pulse must be adjustable and within component specification (95 - 100 us)
+
 The programming pulse is an active low signal impulse of few micro-secondes 5 - 0v sent to the pin NOT E (pin 20)
-```
+
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/PulseGenerator_version2.0.PNG?raw=true)
 
