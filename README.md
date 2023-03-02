@@ -26,6 +26,14 @@ to allow the recognition of many other type and sizes of EPROM memories.
 
 
 ### DC to DC step up converter
+We are using the chip LT1073CN8 to provide a supply voltage around 13V. 
+This component is versatile and easy to setup, just few components needs to be added to provide 
+a steady DC voltage with low ripples. The LT1073CN comes into various packages LT1073-5 and LT1073-12 
+including internal resistors R1 and R2 between GND (pin 5) and the SENSE (pin 8) input, however the 
+version LT1073CN8 does not have these resistors and will be included in our project separately. 
+The advantage of the LT1073CN is the operating voltage range provided from 1V to 30V, the low battery feature 
+detection and the output current limiting.
+
 The DC to DC converter we be exclusively used for the device programming mode.
 It will supply a steady DC voltage (VPP) range 12.75v ±0.25v to set the EPROM is programming
 mode. During the programming mode the data bus Q0 - Q7 is placed in DATA IN mode  
