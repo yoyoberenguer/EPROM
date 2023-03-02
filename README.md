@@ -83,7 +83,9 @@ with a fixed time of 95us per word, the best timing for programming the SMT27C25
 This is by far an extrapolation and to stay within a safe margin for reliability, we will use a lower frequency to take
 into account the rise and fall times of each signals and the various chip access time (data bus and address line)
 
-Note that the chp TMS27C512 and SMT27C512 have respectively programming modes call **SNAP! Pulse programming** & **PRESTO II Programming Algorithm**
+Note: 
+For the version 2.0 the chip TMS27C512 and SMT27C512 have respectively programming modes call **SNAP! Pulse programming**
+& **PRESTO II Programming Algorithm**
 
 Programming with PRESTO II involves the application of a sequence of 100μs program pulses to each byte until a correct verify occurs. 
 During programming and verify operation, a MARGIN MODE circuit is automatically activated in order to guarantee that each cell is programmed with enough
