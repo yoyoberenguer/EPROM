@@ -47,8 +47,9 @@ mode. Please refer to the datasheet for the absolute VPP voltage values (-2V to 
 The reading mode requires 100uA on pin 1 and the programming mode requires 50mA maximum. 
 These current's values (IPP) and the voltage range (VPP) will set the DC to DC step up converter caracteristics 
 for the programming mode.
-The DC to DC converter can also be used for the electronic signature mode, supplying a voltage on 
-the address line A9 (pin 24) of the SMT27C256
+The DC to DC converter can also be used for the electronic signature mode, supplying a 12.5 voltage on 
+the address line A9 (pin 24) of the SMT27C256. As the DC converter supply 12.75V a diode will added to the pin 
+A9 to drop the voltage of few mw.
  
 To activate the electronic signature mode, the programming equipment must force 11.5V to 12.5V on address line A9 of the
 M27C256B, with VCC = VPP = 5V. Two identifier bytes may then be sequenced from the device out-puts by toggling 
@@ -72,6 +73,50 @@ Output DC voltage 12.5V to be compatible with the electronic signature mode
 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/DC2DC_converter.PNG?raw=true)
+
+
+``` 
+Two options were available
+
+1 - Build a DC to DC step up converter from a single AA 1.5V battery to output 5V DC to inject into
+    another DC converter to build the +12.75V for the programming mode 
+ 
+2 - Use a +5V bench power supply for the main project and build a DC to DC converter 5V to +12.75V for the 
+    programming mode.
+    I have choose the option 2, since the current requirement used by the prototype were close to 
+    200 - 300 mA during the testing (due to the 7-seg display and multiples diodes used for the counter). 
+    A DC to DC +5v converter build from AA battery will produce a current upto 200mA.
+  
+The circuit is protected against the main voltages inversion +VCC and GND wit the schotky diode 1N5817
+However the output is not protected against short. 
+If the output is directly connected to the ground the maximum current will be provided except if RLIM 
+exist on pin 1 of the LT1073. 
+
+Rlim is set to 50 ohms and limits the output current.
+Rlim must be at least 1/2W has the amount current might exceed the power dissapation of an 
+1/4W resitor if the output is shorted.
+
+Without Rlim the amount of current flowing through the inverse protection diode 1N5817 will be 
+high and limited only by the bench power supply causing the diode to break down. 
+For a single 1.5V alkaline battery the max current going through the protection diode will be around 
+100-200mA within the diode tolerances 
+
+Low voltage detection value is given by (330K/18K + 1) * 0.212 = 4.09 V
+If the voltage goes below 4.09V the signal LowVoltage_4.1V will be low (close to zero volts) and can 
+be used to determine if the power supply (VCC is set correctly)
+Output voltage is given by (910K/15K + 1) * 0.212 = 13.1V, the output value may vary with the choice 
+of components. Choose metallic film resistor at 1% more accurate than carbone type. 
+
+Inductor 150uH with low ESR
+All resistors are preferably 1% metal film 1/2W for better output voltage precision
+
+Toggle_13V is 0/5V signal to enable the 13V output voltage 
+When Toggle_13V is set to VCC the 13V output voltage is disabled and the voltage will 
+start to drop to VCC or reach VCC if the circuit is turned on. 
+ 
+Required capacitors with low ESR (tantalum preferably) 50V 
+ 
+ ```
 
 ### Programming pulse 
 
