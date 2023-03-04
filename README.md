@@ -149,7 +149,8 @@ margin. No overprogram pulse is applied since the verify in MARGIN MODE provides
 **Considerations:**
 
 
-Programming pulse must be adjustable and within component specification (95 - 100 us)
+Programming pulse must be adjustable and within the Eprom
+ specification (95 - 100 us)
 
 The programming pulse is an active low signal impulse of few micro-secondes 5 - 0v sent to the pin NOT E (pin 20)
 
