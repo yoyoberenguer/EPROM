@@ -88,8 +88,8 @@ Two options for the prototype power supply voltage:
 
 I choose the option 2, since the current requirement used by the prototype was close to 
 200 - 300 mA during the prototype testing (mainly due to 7-seg display and diodes used for the 15-bit counter). 
-A DC to DC +5v converter build from one or 2 AA battery will produce a maximum current of 200mA.
-  
+A DC to DC +5v converter build from one or 2 AA battery will produce a maximum current of 200mA and 
+not provide enough current for the prototype.  
 This circuit is protected against the main power supply voltages inversion with the schotky diode 1N5817, 
 therfore the output is not protected against short.If the output is directly connected to the ground
 the maximum current will be provided except if RLIM is connected to pin 1 of the LT1073 (Rlim is set to 50 ohms
