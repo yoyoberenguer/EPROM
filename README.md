@@ -48,8 +48,8 @@ The reading mode requires 100uA on pin 1 and the programming mode requires 50mA 
 These current's values (IPP) and the voltage range (VPP) will set the DC to DC step up converter caracteristics 
 for the programming mode.
 The DC to DC converter can also be used for the electronic signature mode, supplying a 12.5 voltage on 
-the address line A9 (pin 24) of the SMT27C256. As the DC converter supply 12.75V a diode will added to the pin 
-A9 to drop the voltage of few mw.
+the address line A9 (pin 24) of the SMT27C256. As the DC converter supply 12.75V a diode will be added to the pin 
+A9 to drop few mV.
  
 To activate the electronic signature mode, the programming equipment must force 11.5V to 12.5V on address line A9 of the
 M27C256B, with VCC = VPP = 5V. Two identifier bytes may then be sequenced from the device out-puts by toggling 
