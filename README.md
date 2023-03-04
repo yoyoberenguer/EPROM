@@ -33,8 +33,8 @@ a steady low ripples DC voltage. The LT1073CN comes into various packages LT1073
 including internal resistors R1 and R2 between GND (pin 5) and the SENSE (pin 8) input. 
 However the version LT1073CN8 does not have these resistors and will be included in our project separately to 
 define the output gain. 
-The advantage of the LT1073CN is the operating voltage range provided from 1V to 30V, the low battery feature 
-detection and the optional output current limiting.
+Advantages of the LT1073CN are the operating voltage range, from 1V to 30V, the low battery  
+detection and the optional output current capping
 
 This chip works with a wide range of batteries voltage sources such as 1.5V AA alkaline or 
 lithium battery composing a source voltage within 1.5 - 5.5v. 
