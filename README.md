@@ -26,7 +26,7 @@ to allow the recognition of many other type and sizes of EPROM memories.
 
 
 ### DC to DC step up converter
-We are using the chip LT1073CN8 to provide a supply voltage around 12.75v. 
+We are using the chip LT1073CN8 to provide a voltage around 12.75v. 
 
 This component is versatile and easy to setup, just few components needs to be added to provide 
 a steady low ripples DC voltage. The LT1073CN comes into various packages LT1073-5 and LT1073-12 
