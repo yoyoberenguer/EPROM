@@ -76,40 +76,38 @@ Output DC voltage 12.5V to be compatible with the electronic signature mode
 
 
 ``` 
-Two options were available
+Two options 
 
-1 - Build a DC to DC step up converter from a single AA 1.5V battery to output 5V DC to inject into
+1 - Build a DC to DC step up converter from a single AA 1.5V battery to output 5V DC chain with 
     another DC converter to build the +12.75V for the programming mode 
  
 2 - Use a +5V bench power supply for the main project and build a DC to DC converter 5V to +12.75V for the 
     programming mode.
-    I have choose the option 2, since the current requirement used by the prototype were close to 
-    200 - 300 mA during the testing (due to the 7-seg display and multiples diodes used for the counter). 
-    A DC to DC +5v converter build from AA battery will produce a current upto 200mA.
-  
-The circuit is protected against the main voltages inversion +VCC and GND wit the schotky diode 1N5817
-However the output is not protected against short. 
-If the output is directly connected to the ground the maximum current will be provided except if RLIM 
-exist on pin 1 of the LT1073. 
 
-Rlim is set to 50 ohms and limits the output current.
-Rlim must be at least 1/2W has the amount current might exceed the power dissapation of an 
-1/4W resitor if the output is shorted.
+I choose the option 2, since the current requirement used by the prototype was close to 
+200 - 300 mA during the prototype testing (mainly due to 7-seg display and diodes used for the 15-bit counter). 
+A DC to DC +5v converter build from one or 2 AA battery will produce a maximum current of 200mA.
+  
+This circuit is protected against the main power supply voltages inversion with the schotky diode 1N5817, 
+therfore the output is not protected against short.If the output is directly connected to the ground
+the maximum current will be provided except if RLIM is connected to pin 1 of the LT1073 (Rlim is set to 50 ohms
+and limits the output current).Rlim must be at least 1/2W has the amount current might exceed the power
+dissapation of an 1/4W resitor if the output is shorted.
 
 Without Rlim the amount of current flowing through the inverse protection diode 1N5817 will be 
-high and limited only by the bench power supply causing the diode to break down. 
+high and limited only by the bench power supply current carateristic and the diode will certainly break down. 
 For a single 1.5V alkaline battery the max current going through the protection diode will be around 
-100-200mA within the diode tolerances 
+100-200mA and within the diode tolerances 
 
-Low voltage detection value is given by (330K/18K + 1) * 0.212 = 4.09 V
-If the voltage goes below 4.09V the signal LowVoltage_4.1V will be low (close to zero volts) and can 
-be used to determine if the power supply (VCC is set correctly)
+The circuit is desiogned with a low voltage detection, the low voltage value is given by 
+(330K/18K + 1) * 0.212 = 4.09 V
+If the DC supply voltage (VCC) goes below 4.09V the signal LowVoltage_4.1V will be low (and close 
+to zero volts). This signal can be used to determine if the power supply VCC is set correctly set when
+powering up the prototype.
 Output voltage is given by (910K/15K + 1) * 0.212 = 13.1V, the output value may vary with the choice 
-of components. Choose metallic film resistor at 1% more accurate than carbone type. 
-
-Inductor 150uH with low ESR
+of components. 
+Choose inductor with low ESR.
 All resistors are preferably 1% metal film 1/2W for better output voltage precision
-
 Toggle_13V is 0/5V signal to enable the 13V output voltage 
 When Toggle_13V is set to VCC the 13V output voltage is disabled and the voltage will 
 start to drop to VCC or reach VCC if the circuit is turned on. 
