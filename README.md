@@ -76,7 +76,7 @@ Output DC voltage 12.5V to be compatible with the electronic signature mode
 
 
 ``` 
-Two options 
+Notes:
 
 1 - Build a DC to DC step up converter from a single AA 1.5V battery to output 5V DC chain with 
     another DC converter to build the +12.75V for the programming mode 
