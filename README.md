@@ -86,7 +86,7 @@ Output DC voltage 12.5V to be compatible with the electronic signature mode
 
 
 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/DC2DC_converter.PNG?raw=true)
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/LT1073/DC2DC_converter.PNG?raw=true)
 
 
 ``` 
