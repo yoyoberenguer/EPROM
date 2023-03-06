@@ -19,19 +19,17 @@ light erasable, electrically programmable read-only  memories.
 The version 3.0 (still on the drawing board) will be desgin with the 8-bit microprocessor Zilog Z80 
 to allow the recognition of many other type and sizes of EPROM memories. 
 
-**Logic diagram:**
+**M27C256 Logic diagram:**
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/STM27C256B_logic_diagram.PNG?raw=true)
 
-**Dip connections:**
+**M27C256 Dip connections:**
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/M27C256B_pin_connections.PNG?raw=true)
 
-**Signal names:**
-
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/M27C256B_signal_names.PNG?raw=true)
 
-### Synopsis version 1.0
+### EPROM programmer functional diagram version 1.0
 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/schematic1_version1.PNG?raw=true)
@@ -39,6 +37,10 @@ to allow the recognition of many other type and sizes of EPROM memories.
 
 ### DC to DC step up converter
 We are using the chip LT1073CN8 to provide a voltage around 12.75v. 
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/LT1073/LT1073_pin_configuration.PNG?raw=true)
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/LT1073/LT1073_typical_application.PNG?raw=true)
 
 This component is versatile and easy to setup, just few components needs to be added to provide 
 a steady low ripples DC voltage. The LT1073CN comes into various packages LT1073-5 and LT1073-12 
