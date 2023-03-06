@@ -72,6 +72,10 @@ Byte 0 (A0 = VIL ) rep-resents the manufacturer code and byte 1 (A0 = VIH ) the 
 For the ST-Microelectronics M27C256B, these two identifier bytes are given in Table 4 and can be read-out on
 outputs Q7 to Q0
 
+**Example of 5 to 12v converter: (note this LT1073N-12)**
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/LT1073/LT1073_5_to_12_converter.PNG?raw=true)
+
 **DC to DC converter considerations:**
 
 A9 (pin 29) DC voltage must not exceed –2 to 13.5
@@ -84,7 +88,7 @@ Source DC voltage +5V
 
 Output DC voltage 12.5V to be compatible with the electronic signature mode
 
-
+### EPROM programmer DC to DC converter version 1.0
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/LT1073/DC2DC_converter.PNG?raw=true)
 
@@ -168,6 +172,7 @@ Programming pulse must be adjustable and within the Eprom
 
 The programming pulse is an active low signal impulse of few micro-secondes 5 - 0v sent to the pin NOT E (pin 20)
 
+### EPROM programmer pulse generator version 1.0
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/PulseGenerator_version2.0.PNG?raw=true)
 
