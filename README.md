@@ -6,7 +6,7 @@ EPROMs memories (read-only memory whose contents can be erased by ultraviolet li
 or other means and reprogrammed using a pulsed voltage) such as the SMT27C256B from Texas instrument. 
 
 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/27C256.jpg)
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/27C256.jpg)
 
 The chip SMT27C256B is composed of 256K bit electrically Programmable Read Only Memory (EPROM).  
 The device is organized as 32K words by 8 bits  (32K  bytes). 
@@ -18,6 +18,18 @@ light erasable, electrically programmable read-only  memories.
 
 The version 3.0 (still on the drawing board) will be desgin with the 8-bit microprocessor Zilog Z80 
 to allow the recognition of many other type and sizes of EPROM memories. 
+
+**Logic diagram:**
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/STM27C256B_logic_diagram.PNG?raw=true)
+
+**Dip connections:**
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/M27C256B_pin_connections.PNG?raw=true)
+
+**Signal names:**
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/M27C256B_signal_names.PNG?raw=true)
 
 ### Synopsis version 1.0
 
