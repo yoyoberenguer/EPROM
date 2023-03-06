@@ -174,5 +174,5 @@ The programming pulse is an active low signal impulse of few micro-secondes 5 - 
 
 ### EPROM programmer pulse generator version 1.0
 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/PulseGenerator_version2.0.PNG?raw=true)
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/PulseGenerator_version1.0.PNG?raw=true)
 
