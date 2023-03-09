@@ -93,7 +93,7 @@ Output DC voltage 12.5V to be compatible with the electronic signature mode
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/LT1073/DC2DC_converter.PNG?raw=true)
 
 
-``` 
+
 Notes:
 
 Two options for the prototype power supply voltage: 
@@ -133,8 +133,8 @@ When Toggle_13V is set to VCC the 13V output voltage is disabled and the voltage
 start to drop to VCC or reach VCC if the circuit is turned on. 
  
 Required capacitors with low ESR (tantalum preferably) 50V 
- 
- ```
+
+
 
 ### Programming pulse 
 
