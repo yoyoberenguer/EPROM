@@ -187,7 +187,7 @@ pin 20 (E) of the EPROM SMT27C256B. The maximum programming frequency will be ad
 resistor to be compatible for most type of EPROMs.
  
 This circuit compare the maximum frequency(B) with the user defined/customized frequency 
-coming out of the data selector/multiplexer SN74LS153 called (A) and labbeled CLK in this 
+coming out of the data selector/multiplexer SN74LS153 called (A) and labbeled CLK in the below 
 diagram. 
 
 This circuit will provide 3 bit of information regarding these frequencies
@@ -213,12 +213,15 @@ result is display with 3 diodes (A<B green, A>B red, A=B yellow).
 The first counter reaching the count 16 has the highest frequency. If both 
 counter reach 16 at the same time, then both frequencies are equal. 
 To be noted that a carry over signal is generated when the SN74LS193 counter reach the max 
-count(16) on pin 12 ~{CO}. This signal will be monitored with and AND gate SN74LS08 
+count(16) on pin 12 ~{CO}. This signal will be monitored with an AND gate SN74LS08 
 ~{C01} & ~{C02} and passed into a NOT gate to trigger a reset of both counters.
+
 Resestting both counters at the same time is a paramount condition in order 
 to have an accurate frequency comparison.
+
 The result is display when at least one of the MSB most significant bit is high level 
 to avoid displaying false positive A=B for both frequencies.
+
 QC and QD from (A) counter are used with an OR GATE SN74LS32 to enable a 2N2222 transistor 
 and supply 22mA to the leds (resistor network of 220R)
 
