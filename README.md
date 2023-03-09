@@ -176,3 +176,8 @@ The programming pulse is an active low signal impulse of few micro-secondes 5 - 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/PulseGenerator_version1.0.PNG?raw=true)
 
+
+### Frequence comparator version 1.0
+
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/Frequency_comparator_version1.0.PNG?raw=true)
