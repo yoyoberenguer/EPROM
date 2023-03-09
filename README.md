@@ -179,7 +179,7 @@ The programming pulse is an active low signal impulse of few micro-secondes 5 - 
 
 ### Frequence comparator version 1.0
 
-Frequency comparator (range Kz)
+Frequency comparator (range in Kz)
 The maximum programming frequency tolarated by the EPROM is defined 
 by the NE555 device (around 10Khz) and used by the below circuit for reference. 
 This frequency correspond to the programming pulse period 95 - 105us used on 
