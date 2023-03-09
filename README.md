@@ -181,18 +181,20 @@ The programming pulse is an active low signal impulse of few micro-secondes 5 - 
 
 Frequency comparator (range Kz)
 The maximum programming frequency tolarated by the EPROM is defined 
-with the NE555 device and used for reference, this frequency correspond to 
-the minimal signal period for input E, pin 20 (programming pulse, 95 - 105us for the
-SMT27C256B). The maximum programming frequency will be adjustable with a variable
-resistor to be compatible with different type of EPROMs.
+by the NE555 device (around 10Khz) and used by the below circuit for reference. 
+This frequency correspond to the programming pulse period 95 - 105us used on 
+pin 20 (E) of the EPROM SMT27C256B. The maximum programming frequency will be adjustable with a variable
+resistor to be compatible for most type of EPROMs.
  
-
 This circuit compare the maximum frequency(B) with the user defined/customized frequency 
 coming out of the data selector/multiplexer SN74LS153 called (A) and labbeled CLK in this 
-diagram. This circuit will provide 3 bit of information regarding these frequencies
+diagram. 
+
+This circuit will provide 3 bit of information regarding these frequencies
  (A<B, A>B, A=B) in real time.
  
 Purpose of this circuit: 
+
 When the selected frequency (A) is above the maximum programming pulse frequency  
 a red diode will be lit, below that threshold a green diode will be lit up,
 and finally when both frequencies are equals a third diode (yellow) will be on.
@@ -203,6 +205,7 @@ This feature will prevent checksum error and bad copy of the SOURCE EPROM during
 the programation mode.
 
 How it works?:
+
 Both frequencies are decomposed into sub-frequencies, each stages of the synchronous 
 UP 4-bits binary counter SN74LS193 will divide the frequency by 2. 
 Each stages of the counter are compared bit by bit into the 16 pins SN74LS85 and the 
@@ -219,8 +222,7 @@ to avoid displaying false positive A=B for both frequencies.
 QC and QD from (A) counter are used with an OR GATE SN74LS32 to enable a 2N2222 transistor 
 and supply 22mA to the leds (resistor network of 220R)
 
-This false positive 
-occure each time the counters are reset to zero simultinously. 
+This false positive occure each time the counters are reset to zero simultinously. 
 At T = 0 when both counters are reset, the outputs QA, QB, QC, QD will all be 
 at low level and will force the result A=B for a fraction of a second, hence raising 
 a false condition A=B (yellow led flickering).
