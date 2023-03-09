@@ -45,8 +45,8 @@ We are using the chip LT1073CN8 to provide a voltage around 12.75v.
 This component is versatile and easy to setup, just few components needs to be added to provide 
 a steady low ripples DC voltage. The LT1073CN comes into various packages LT1073-5 and LT1073-12 
 including internal resistors R1 and R2 between GND (pin 5) and the SENSE (pin 8) input. 
-However the version LT1073CN8 does not have these resistors and will be included in our project separately to 
-define the output gain. 
+However the version LT1073CN8 does not have these resistors and they will be included in our 
+project separately to define the output voltage gain. 
 Advantages of the LT1073CN are the operating voltage range, from 1V to 30V, the low battery  
 detection and the optional output current capping
 
