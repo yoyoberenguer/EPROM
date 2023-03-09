@@ -179,5 +179,59 @@ The programming pulse is an active low signal impulse of few micro-secondes 5 - 
 
 ### Frequence comparator version 1.0
 
+Frequency comparator (range Kz)
+The maximum programming frequency tolarated by the EPROM is defined 
+with the NE555 device and used for reference, this frequency correspond to 
+the minimal signal period for input E, pin 20 (programming pulse, 95 - 105us for the
+SMT27C256B). The maximum programming frequency will be adjustable with a variable
+resistor to be compatible with different type of EPROMs.
+ 
+
+This circuit compare the maximum frequency(B) with the user defined/customized frequency 
+coming out of the data selector/multiplexer SN74LS153 called (A) and labbeled CLK in this 
+diagram. This circuit will provide 3 bit of information regarding these frequencies
+ (A<B, A>B, A=B) in real time.
+ 
+Purpose of this circuit: 
+When the selected frequency (A) is above the maximum programming pulse frequency  
+a red diode will be lit, below that threshold a green diode will be lit up,
+and finally when both frequencies are equals a third diode (yellow) will be on.
+Note that multiples led can be lit at the same time when both frequencies are 
+closing-in. 
+
+This feature will prevent checksum error and bad copy of the SOURCE EPROM during 
+the programation mode.
+
+How it works?:
+Both frequencies are decomposed into sub-frequencies, each stages of the synchronous 
+UP 4-bits binary counter SN74LS193 will divide the frequency by 2. 
+Each stages of the counter are compared bit by bit into the 16 pins SN74LS85 and the 
+result is display with 3 diodes (A<B green, A>B red, A=B yellow).
+The first counter reaching the count 16 has the highest frequency. If both 
+counter reach 16 at the same time, then both frequencies are equal. 
+To be noted that a carry over signal is generated when the SN74LS193 counter reach the max 
+count(16) on pin 12 ~{CO}. This signal will be monitored with and AND gate SN74LS08 
+~{C01} & ~{C02} and passed into a NOT gate to trigger a reset of both counters.
+Resestting both counters at the same time is a paramount condition in order 
+to have an accurate frequency comparison.
+The result is display when at least one of the MSB most significant bit is high level 
+to avoid displaying false positive A=B for both frequencies.
+QC and QD from (A) counter are used with an OR GATE SN74LS32 to enable a 2N2222 transistor 
+and supply 22mA to the leds (resistor network of 220R)
+
+This false positive 
+occure each time the counters are reset to zero simultinously. 
+At T = 0 when both counters are reset, the outputs QA, QB, QC, QD will all be 
+at low level and will force the result A=B for a fraction of a second, hence raising 
+a false condition A=B (yellow led flickering).
+
+Choosing the MSB will guarantee the most accurate result since both frequency will diverge 
+significantly for each stages of the SN74LS193.
+
+To be noted that the 16 pins chip SN74LS85 does not have any enable pin and will 
+continuoulsy compare both frequencies.
+
+  
+
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/Frequency_comparator_version1.0.PNG?raw=true)
