@@ -209,8 +209,8 @@ the programation mode.
 
 How it works?:
 
-Both frequencies are decomposed into sub-frequencies, each stages of the synchronous 
-UP 4-bits binary counter SN74LS193 will divide the frequency by 2. 
+Both frequencies are decomposed into sub-frequencies by each stages of the synchronous 
+UP 4-bits binary counter SN74LS193 dividing the frequency by 2. 
 
 Each stages of the counter are compared bit by bit into the 16 pins SN74LS85 and the 
 result is display with 3 diodes (A<B green, A>B red, A=B yellow).
@@ -219,10 +219,10 @@ The first counter reaching the count 16 has the highest frequency. If both
 counter reach 16 at the same time, then both frequencies are equal. 
 
 To be noted that a carry over signal is generated when the SN74LS193 counter reach the max 
-count(16) on pin 12 ~{CO}. 
+count(16) on pin 12 NOT CO. 
 
 This signal will be monitored with an AND gate SN74LS08 
-~{C01} & ~{C02} and passed into a NOT gate to trigger a reset of both counters.
+NOT C01 & NOT C02 and passed into a NOT gate to trigger a reset of both counters.
 
 Resestting both counters at the same time is a paramount condition in order 
 to have an accurate frequency comparison.
