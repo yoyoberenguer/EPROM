@@ -180,8 +180,10 @@ The programming pulse is an active low signal impulse of few micro-secondes 5 - 
 ### Frequence comparator version 1.0
 
 Frequency comparator (range in Kz)
+
 The maximum programming frequency tolarated by the EPROM is defined 
 by the NE555 device (around 10Khz) and used by the below circuit for reference. 
+
 This frequency correspond to the programming pulse period 95 - 105us used on 
 pin 20 (E) of the EPROM SMT27C256B. The maximum programming frequency will be adjustable with a variable
 resistor to be compatible for most type of EPROMs.
@@ -198,6 +200,7 @@ Purpose of this circuit:
 When the selected frequency (A) is above the maximum programming pulse frequency  
 a red diode will be lit, below that threshold a green diode will be lit up,
 and finally when both frequencies are equals a third diode (yellow) will be on.
+
 Note that multiples led can be lit at the same time when both frequencies are 
 closing-in. 
 
@@ -208,12 +211,17 @@ How it works?:
 
 Both frequencies are decomposed into sub-frequencies, each stages of the synchronous 
 UP 4-bits binary counter SN74LS193 will divide the frequency by 2. 
+
 Each stages of the counter are compared bit by bit into the 16 pins SN74LS85 and the 
 result is display with 3 diodes (A<B green, A>B red, A=B yellow).
+
 The first counter reaching the count 16 has the highest frequency. If both 
 counter reach 16 at the same time, then both frequencies are equal. 
+
 To be noted that a carry over signal is generated when the SN74LS193 counter reach the max 
-count(16) on pin 12 ~{CO}. This signal will be monitored with an AND gate SN74LS08 
+count(16) on pin 12 ~{CO}. 
+
+This signal will be monitored with an AND gate SN74LS08 
 ~{C01} & ~{C02} and passed into a NOT gate to trigger a reset of both counters.
 
 Resestting both counters at the same time is a paramount condition in order 
