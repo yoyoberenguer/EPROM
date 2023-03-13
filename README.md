@@ -241,9 +241,9 @@ a false condition A=B (yellow led flickering).
 Choosing the MSB will guarantee the most accurate result since both frequency will diverge 
 significantly for each stages of the SN74LS193.
 
-To be noted that the 16 pins chip SN74LS85 does not have any enable pin and will 
-continuoulsy compare both frequencies.
-
+To be noted that:
+ - 16 pins chip SN74LS85 does not have any enable pin and will continuoulsy compare both frequencies.
+ - Both components 74LS08 and 74LS04 can be replaced with a NAND gate 
   
 
 
