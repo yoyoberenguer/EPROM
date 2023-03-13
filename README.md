@@ -244,6 +244,7 @@ significantly for each stages of the SN74LS193.
 To be noted that:
  - 16 pins chip SN74LS85 does not have any enable pin and will continuoulsy compare both frequencies.
  - Both components 74LS08 and 74LS04 can be replaced with a NAND gate 
+ - The pin 11 LOAD is not used and connected to VCC and inputs ABCD are not used and connected to ground 
   
 
 
