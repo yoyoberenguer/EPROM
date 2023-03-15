@@ -182,7 +182,11 @@ The programming pulse is an active low signal impulse of few micro-secondes 5 - 
 Frequency comparator (range in Kz)
 
 The maximum programming frequency tolarated by the EPROM is defined 
-by the NE555 device (around 10Khz) and used by the below circuit for reference. 
+by the NE555 device (around 10Khz) and used by the below KICAD circuit for reference.
+
+Astable mode explained in the PDF 
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/NE555_diagram.PNG?raw=true)
+
 This frequency correspond to the programming pulse period 95 - 105us used on 
 pin 20 (E) of the EPROM SMT27C256B. The maximum programming frequency will be adjustable with a variable
 resistor to be compatible for most type of EPROMs.
@@ -191,6 +195,14 @@ coming out of the data selector/multiplexer SN74LS153 called (A) and labbeled CL
 diagram. 
 This circuit will provide 3 bit of information regarding these frequencies
  (A<B, A>B, A=B) in real time.
+ 
+ SN74LS85 Pinout
+ 
+ ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/74ls85_pinout.PNG?raw=true)
+ 
+ SN74LS85 function table
+ 
+ ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/74LS85_function_table.PNG?raw=true)
  
 Purpose of this circuit: 
 
@@ -227,6 +239,10 @@ a false condition A=B (yellow led flickering).
 
 Choosing the MSB will guarantee the most accurate result since both frequency will diverge 
 significantly for each stages of the SN74LS193.
+
+SN74LS193 pinout
+
+ ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/74LS193_pinout.PNG?raw=true)
 
 To be noted that:
  - 16 pins chip SN74LS85 does not have any enable pin and will continuoulsy compare both frequencies.
