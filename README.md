@@ -217,18 +217,21 @@ Both frequencies are decomposed into sub-frequencies by each stages of the synch
 UP 4-bits binary counter SN74LS193 dividing the frequency by 2. 
 Each stages of the counter are compared bit by bit into the 16 pins SN74LS85 and the 
 result is display with 3 diodes (A<B green, A>B red, A=B yellow).
+
 The first counter reaching the count 16 has the highest frequency. If both 
 counter reach 16 at the same time, then both frequencies are equal. 
 To be noted that a carry over signal is generated when the SN74LS193 counter reach the max 
 count(16) on pin 12 NOT CO. 
 This signal will be monitored with an AND gate SN74LS08 
 NOT C01 & NOT C02 and passed into a NOT gate to trigger a reset of both counters.
+
 Resestting both counters at the same time is a paramount condition in order 
 to have an accurate frequency comparison.
 The result is display when at least one of the MSB most significant bit is high level 
 to avoid displaying false positive A=B for both frequencies.
 QC and QD from (A) counter are used with an OR GATE SN74LS32 to enable a 2N2222 transistor 
-and supply 22mA to the leds (resistor network of 220R)
+and supply 22mA to the leds (resistor network of 220R).
+
 This false positive occure each time the counters are reset to zero simultinously. 
 At T = 0 when both counters are reset, the outputs QA, QB, QC, QD will all be 
 at low level and will force the result A=B for a fraction of a second, hence raising 
