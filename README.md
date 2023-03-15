@@ -256,7 +256,8 @@ To be noted that:
 
 ### Frequency Generator 
 
-The prototype will have different source of clocks to help troobleshooting is necessary. 
+The prototype will have different source of clocks to help troobleshooting.
+
 The board will have a Schmitt trigger oscillator with an adjustable resistor to have a wide range of 
 frequencies available (time constant given by R1 x C1).
 A (32768khz) quarkz frequency oscillator for very accurate cycles using a Schmitt trigger CD40106BE chip. 
@@ -266,7 +267,8 @@ add also an extra inverter to reshape the signal.
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20generator/Frequency_generator.PNG?raw=true)
 
-And finally a step by step clock generator to troobleshoot on demand
+And finally a step by step clock generator to troobleshoot on demand, a pulse is generated each time the contact SW1 is 
+pressed 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20generator/Manual_clock_pulse.PNG?raw=true)
 
