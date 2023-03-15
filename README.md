@@ -183,15 +183,12 @@ Frequency comparator (range in Kz)
 
 The maximum programming frequency tolarated by the EPROM is defined 
 by the NE555 device (around 10Khz) and used by the below circuit for reference. 
-
 This frequency correspond to the programming pulse period 95 - 105us used on 
 pin 20 (E) of the EPROM SMT27C256B. The maximum programming frequency will be adjustable with a variable
 resistor to be compatible for most type of EPROMs.
- 
 This circuit compare the maximum frequency(B) with the user defined/customized frequency 
 coming out of the data selector/multiplexer SN74LS153 called (A) and labbeled CLK in the below 
 diagram. 
-
 This circuit will provide 3 bit of information regarding these frequencies
  (A<B, A>B, A=B) in real time.
  
@@ -200,10 +197,8 @@ Purpose of this circuit:
 When the selected frequency (A) is above the maximum programming pulse frequency  
 a red diode will be lit, below that threshold a green diode will be lit up,
 and finally when both frequencies are equals a third diode (yellow) will be on.
-
 Note that multiples led can be lit at the same time when both frequencies are 
 closing-in. 
-
 This feature will prevent checksum error and bad copy of the SOURCE EPROM during 
 the programation mode.
 
