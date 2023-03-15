@@ -261,8 +261,8 @@ The prototype will have different source of clocks to help troobleshooting.
 The board will have a Schmitt trigger oscillator with an adjustable resistor to have a wide range of 
 frequencies available (time constant given by R1 x C1).
 A (32768khz) quarkz frequency oscillator for very accurate cycles using a Schmitt trigger CD40106BE chip. 
-If you are not using a schmitt trigger add 2 resistors 47k feeding +VCC and ground of the IC power supply, 
-add also an extra inverter to reshape the signal.  
+If you are not using a schmitt trigger, add 2 resistors 47k feeding the +VCC and ground of the IC power supply and  
+add an extra inverter to reshape the signal.  
 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20generator/Frequency_generator.PNG?raw=true)
