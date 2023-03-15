@@ -184,9 +184,6 @@ Frequency comparator (range in Kz)
 The maximum programming frequency tolarated by the EPROM is defined 
 by the NE555 device (around 10Khz) and used by the below KICAD circuit for reference.
 
-Astable mode explained in the PDF 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/NE555_diagram.PNG?raw=true)
-
 This frequency correspond to the programming pulse period 95 - 105us used on 
 pin 20 (E) of the EPROM SMT27C256B. The maximum programming frequency will be adjustable with a variable
 resistor to be compatible for most type of EPROMs.
