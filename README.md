@@ -267,7 +267,7 @@ in the next electronic stage (Frequency multiplexer)
 
 The prototype will have different customizable frequency sources to help troobleshooting.
 
-The board will have a Schmitt trigger oscillator with an adjustable resistor to have a wide range of 
+The board will be designed with a Schmitt trigger oscillator with an adjustable resistor to have a wide range of 
 frequencies available (time constant given by R1 x C1).
 
 A (32768khz) quarkz frequency oscillator using a Schmitt trigger CD40106BE chip. 
