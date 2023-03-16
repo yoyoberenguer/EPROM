@@ -265,7 +265,7 @@ As discussed previously, the highest theoritical frequency of an EPROM 27C256 is
 The main frequency value will be set for twice the frequency value used to by the Pulse generator, the reason will be explain 
 in the next electronic stage (Frequency multiplexer)
 
-The prototype will have different customizable source of clocks to help troobleshooting.
+The prototype will have different customizable frequency sources to help troobleshooting.
 
 The board will have a Schmitt trigger oscillator with an adjustable resistor to have a wide range of 
 frequencies available (time constant given by R1 x C1).
