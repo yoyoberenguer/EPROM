@@ -34,6 +34,7 @@ to allow the recognition of many other type and sizes of EPROM memories.
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/schematic1_version1.PNG?raw=true)
 
+---
 
 ### DC to DC step up converter
 We are using the chip LT1073CN8 to provide a voltage around 12.75v. 
@@ -134,7 +135,7 @@ start to drop to VCC or reach VCC if the circuit is turned on.
  
 Required capacitors with low ESR (tantalum preferably) 50V 
 
-
+---
 
 ### Programming pulse 
 
@@ -176,6 +177,7 @@ The programming pulse is an active low signal impulse of few micro-secondes 5 - 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/PulseGenerator_version1.0.PNG?raw=true)
 
+---
 
 ### Frequence comparator version 1.0
 
@@ -253,6 +255,7 @@ To be noted that:
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/Frequency_comparator_version1.0.PNG?raw=true)
 
+---
 
 ### Frequency Generator 
 
@@ -279,4 +282,4 @@ pressed
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20generator/Manual_clock_pulse.PNG?raw=true)
 
-
+---
