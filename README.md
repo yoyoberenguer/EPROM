@@ -256,7 +256,12 @@ To be noted that:
 
 ### Frequency Generator 
 
-The prototype will have different source of clocks to help troobleshooting.
+The frequency generator will create the main frequency needed by the 16-bit counter (A0 - A15) to iterate every possible addresses 
+sequentially throughout the bus.As discussed previously, the highest theoritical frequency an EPROM 27C256 can write data is around 10 Khz
+when sending a low pulse to the pin 20 (NOT E). The main frequency value will be set for twice the frequency used to by the Pulse generator. 
+The reason will be explain in the next electronic stage (Frequency multiplexer)
+
+The prototype will have different customizable source of clocks to help troobleshooting.
 
 The board will have a Schmitt trigger oscillator with an adjustable resistor to have a wide range of 
 frequencies available (time constant given by R1 x C1).
