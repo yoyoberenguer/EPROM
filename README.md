@@ -257,9 +257,10 @@ To be noted that:
 ### Frequency Generator 
 
 The frequency generator will create the main frequency needed by the 16-bit counter (A0 - A15) to iterate every possible addresses 
-sequentially throughout the bus.As discussed previously, the highest theoritical frequency an EPROM 27C256 can write data is around 10 Khz
-when sending a low pulse to the pin 20 (NOT E). The main frequency value will be set for twice the frequency used to by the Pulse generator. 
-The reason will be explain in the next electronic stage (Frequency multiplexer)
+sequentially set on the "address bus".
+As discussed previously, the highest theoritical frequency of an EPROM 27C256 is around 10 Kh (pin 20). 
+The main frequency value will be set for twice the frequency used to by the Pulse generator, the reason will be explain 
+in the next electronic stage (Frequency multiplexer)
 
 The prototype will have different customizable source of clocks to help troobleshooting.
 
