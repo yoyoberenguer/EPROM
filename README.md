@@ -259,7 +259,7 @@ To be noted that:
 
 ### Frequency Generator 
 
-The frequency generator will provide the main frequency needed by the 16-bit counter (A0 - A15) to iterate every possible addresses 
+The frequency generator will provide the main frequency needed by the 16-bit counter (A0 - A14) to iterate every possible addresses 
 sequentially set on the "address bus".
 As discussed previously, the highest theoritical frequency of an EPROM 27C256 is around 10 Kh (pin 20). 
 The main frequency value will be set for twice the frequency value used to by the Pulse generator, the reason will be explain 
