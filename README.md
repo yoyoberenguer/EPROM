@@ -309,10 +309,11 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
   
  To be noted:
  * SN74F163N flip flops trigger on rising edge while the DM74LS112A & HEF4060B are negative edge triggering, this is 
-   important to know in order to avoid a de-synchronization of the address bus through Q0, Q1, Q2, Q10, Q14, Q15.
+   important to know in order to avoid a de-synchronization of the address bus through out the bits Q0-Q2, Q10, Q14, Q15.
  * Extra JK flip flop Q10, Q14, Q15 added to the counter are build in asynchronous mode contrasting with (HEF4060B & SN74F163N), but 
    this minor change will not affect the binary count and frequencies. 
- * JK bit A16 is reserved for the version 2.0 (512K EPROM)
+ * Q15 is hight when the count has reached the last address 3FFFF (EPROM 256K), Q16 is reserved for 512K EPROM (version 2.0). 
+ 
  
   HEF4060 pinout 
   
@@ -328,6 +329,34 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
 
 
 ### Display multiplexer 7-segments
+
+
+7 Segements multiplexing. 
+
+Display the memory value `COPIED OVER` (16 bits, 2 bytes) on the address lines (A0-A14). 
+The word/value is present on the 8 bits data lines (first 4 bits D0-D3 represent the char number 1 (U4)
+and last 4 bits (D4-D7) for char number 2 (U19).
+ 
+The IC 74LS157 allow to select the less significant 4 bits (D0-D3) or the last most 
+significant bit (D4-D7) bits of the data bus.
+Each 4 bits represent the char recorded in the memory cells, 4 bits for a decimal value (0-16 or 0-F hex). 
+This decimal value is used on the addresss lines (A0-A3) of the 27C256 EPROM IC to convert the decimal value into 
+an hexadecimal charactere (0-F). 
+The EPROM is used as a decoder BCD to HEX by mapping a decimal values.
+The rest of the addresse lines on the EPROM are set to zero e.g (A4-A14). 
+The first 32 words of the EPROM (addresses $00000000 - $00000010) are encoded to represent the hexadecimal 
+value 0 to F (7 segments representation of the decimal value present on the address bus A0-A3, including 
+the decimal point). The value must take into consideration the type of 7-seg display (common cathode or anode)
+PS Adresses $00000000 - $00000020 can also be populated with 7 segments code for common anode) if this is the case
+we can add an single switch to set 1 or zero to A5 (two select both types of display common cathode or common annode)
+
+Both 7 segs displays are common annode, each displays will be lit during a short period
+when a signal is sent (+5V) to the corresponding transistor to turn on the display. 
+As the transistors Q2 and Q4 are connected to Q and ~{Q} they will be operational at different time.
+CLK must be > 60hz to avoid flickering between U4 & U19 (HDSP-7503)
+
+The IC 74LS112 (JK flip flop) is producing a clock signal (half of the CLK frequency) and provide
+a signal to turn on and off the 7 segments displays alternatively 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/Multiplexing_diagram.PNG?raw=true)
 
