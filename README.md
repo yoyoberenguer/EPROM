@@ -289,4 +289,8 @@ pressed
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/Counter.PNG?raw=true)
 
 
+### Display multiplexer 7-segments
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/Multiplexing_diagram.PNG?raw=true)
+
 
