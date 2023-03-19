@@ -297,6 +297,9 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
   count desired. The active-low output of the gate used for decoding is connected to the clear input to
   synchronously clear the counter to 0000 (LLLL).
   
+  ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/SN74f163_pinout.PNG?raw=true)
+  
+  
  - DM74LS112A (Dual Negative-Edge-Triggered Master-Slave J-K Flip-Flop) with Preset, Clear, and Complementary Outputs
    This device contains two independent negative edge triggered J-K flip-flops with complementary outputs.
 
