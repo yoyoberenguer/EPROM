@@ -302,7 +302,21 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
 
 - HEF4060B is a 14-stage ripple-carry binary counter/divider and oscillator with three
   oscillator terminals (RS, REXT and CEXT), ten buffered outputs (Q3 to Q9 and Q11 to Q13) and an overriding asynchronous 
-  master reset input (MR).
+  master reset input (MR). As shown in the functional diagram and the pinout circuit the outputs Q0, Q1, Q2, Q10 are 
+  missing from the chip and would have to be build separately in our design.
+  The external oscillator (RS, REXT and CEXT) will be disregarded and we will use an external oscillator to cadence the 
+  HEF4060B and the remaining flip flops & 4 - bit counter (SN74F163N)
+  
+ To be noted that SN74F163N flip flops trigger on rising edge while the DM74LS112A & HEF4060B are negative edge triggering, this is 
+ important to know in order to avoid a de-synchronization of the address bus.
+   
+  HEF4060 pinout 
+  
+  ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060B_pinout.PNG?raw=true)
+
+  HEF4060 functional diagram 
+  
+  ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060_Functional_diagram.PNG?raw=true)
 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/Counter.PNG?raw=true)
