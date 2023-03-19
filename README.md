@@ -286,6 +286,7 @@ pressed
 
 ### Binary Counter 
 
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/Counter.PNG?raw=true)
 
 
 
