@@ -308,7 +308,7 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
   HEF4060B and the remaining flip flops & 4 - bit counter (SN74F163N)
   
  To be noted that SN74F163N flip flops trigger on rising edge while the DM74LS112A & HEF4060B are negative edge triggering, this is 
- important to know in order to avoid a de-synchronization of the address bus.
+ important to know in order to avoid a de-synchronization of the address bus through Q0, Q1, Q2, Q10, Q14, Q15.
    
   HEF4060 pinout 
   
