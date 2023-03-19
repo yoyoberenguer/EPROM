@@ -342,11 +342,14 @@ and last 4 bits (D4-D7) for char number 2 (U19).
  
 The IC 74LS157 allow to select the less significant 4 bits (D0-D3) or the last most 
 significant bit (D4-D7) bits of the data bus.
+
 Each 4 bits represent the char recorded in the memory cells, 4 bits for a decimal value (0-16 or 0-F hex). 
 This decimal value is used on the addresss lines (A0-A3) of the 27C256 EPROM IC to convert the decimal value into 
 an hexadecimal charactere (0-F). 
+
 The EPROM is used as a decoder BCD to HEX by mapping a decimal values.
 The rest of the addresse lines on the EPROM are set to zero e.g (A4-A14). 
+
 The first 32 words of the EPROM (addresses $00000000 - $00000010) are encoded to represent the hexadecimal 
 value 0 to F (7 segments representation of the decimal value present on the address bus A0-A3, including 
 the decimal point). The value must take into consideration the type of 7-seg display (common cathode or anode)
