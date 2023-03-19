@@ -296,6 +296,13 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
   synchronous clear allows the count length to be modified easily by decoding the Q outputs for the maximum
   count desired. The active-low output of the gate used for decoding is connected to the clear input to
   synchronously clear the counter to 0000 (LLLL).
+  
+ - DM74LS112A (Dual Negative-Edge-Triggered Master-Slave J-K Flip-Flop) with Preset, Clear, and Complementary Outputs
+   This device contains two independent negative edge triggered J-K flip-flops with complementary outputs.
+
+- HEF4060B is a 14-stage ripple-carry binary counter/divider and oscillator with three
+  oscillator terminals (RS, REXT and CEXT), ten buffered outputs (Q3 to Q9 and Q11 to Q13) and an overriding asynchronous 
+  master reset input (MR).
 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/Counter.PNG?raw=true)
