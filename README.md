@@ -307,16 +307,20 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
   The external oscillator (RS, REXT and CEXT) will be disregarded and we will use an external oscillator to cadence the 
   HEF4060B and the remaining flip flops & 4 - bit counter (SN74F163N)
   
- To be noted that SN74F163N flip flops trigger on rising edge while the DM74LS112A & HEF4060B are negative edge triggering, this is 
- important to know in order to avoid a de-synchronization of the address bus through Q0, Q1, Q2, Q10, Q14, Q15.
-   
+ To be noted:
+ * SN74F163N flip flops trigger on rising edge while the DM74LS112A & HEF4060B are negative edge triggering, this is 
+   important to know in order to avoid a de-synchronization of the address bus through Q0, Q1, Q2, Q10, Q14, Q15.
+ * Extra JK flip flop Q10, Q14, Q15 added to the counter are build in asynchronous mode contrasting with (HEF4060B & SN74F163N), but 
+   this minor change will not affect the binary count and frequencies. 
+ * JK bit A16 is reserved for the version 2.0 (512K EPROM)
+ 
   HEF4060 pinout 
   
   ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060B_pinout.PNG?raw=true)
 
   HEF4060 functional diagram 
   
-  * Note that the output Q0 - Q2, Q10 are missing frim the functional diagram 
+  * Note that the outputs Q0 - Q2, Q10 are missing frim the functional diagram 
   ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060_Functional_diagram.PNG?raw=true)
 
 
