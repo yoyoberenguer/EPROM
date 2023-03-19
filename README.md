@@ -316,6 +316,7 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
 
   HEF4060 functional diagram 
   
+  * Note that the output Q0 - Q2, Q10 are missing frim the functional diagram 
   ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060_Functional_diagram.PNG?raw=true)
 
 
