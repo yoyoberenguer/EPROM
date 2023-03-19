@@ -283,5 +283,9 @@ pressed
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20generator/Manual_clock_pulse.PNG?raw=true)
 
 ---
-Binary Counter 
+
+### Binary Counter 
+
+
+
 
