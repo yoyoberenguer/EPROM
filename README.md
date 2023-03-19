@@ -286,6 +286,18 @@ pressed
 
 ### Binary Counter 
 
+
+
+The below diagram represent the 15-bits binary counter (A0-A14) made up from different components 
+
+- SN74F163N (4 bit synchronous counter) flip-flops triggering on the rising (positive-going) edge of CLK.
+  The clear function is synchronous, and a low logic level at the clear (CLR) input sets all four of the flip-flop outputs
+  to low after the next low-to-high transition of the clock, regardless of the levels of ENP and ENT. This
+  synchronous clear allows the count length to be modified easily by decoding the Q outputs for the maximum
+  count desired. The active-low output of the gate used for decoding is connected to the clear input to
+  synchronously clear the counter to 0000 (LLLL).
+
+
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/Counter.PNG?raw=true)
 
 
