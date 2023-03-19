@@ -148,7 +148,7 @@ As the minimal programming pulse cannot be below 95us this will give us a refere
 programming pulse frequency that can be delivered to the EPROM.
 
 Based on consecutives minimal period of 95us the maximum frequency is around 10Khz (without taking into account 
-the propagation delays and the rise and fall times of the each signals).
+the propagation delays and the rise and fall times of each signals).
 
 with a fixed time of 95us per word, the best timing for programming the SMT27C256 would be 32768 * 100us ≈ 3.2 seconds
 This is by far an approximation and to stay within a safe margin for reliability, we will use a lower frequency to take
