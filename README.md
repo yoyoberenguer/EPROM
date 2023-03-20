@@ -346,14 +346,15 @@ D0-D3 will represent the hex value A and D4-D7 the hex value 0.
 The chip 74LS157 is a quad 2 inputs multiplexer allowing to split the data present on the data bus D0-D7 
 into two nibbles of data, the less significant bits (D0-D3) and the most significant bit (D4-D7).
 
-Each 4 bits values represent the char recorded in the EPROM memory cells, 4 bits for a decimal value (0-16 or 0-F hex). 
-This decimal value is used on the addresss lines (A0-A3) of the 27C256 EPROM IC to convert the decimal value into 
+74LS157 outputs (Za, Zb, Zc, Zd) are connected to the EPROM decoder via (A0-A3) to convert the decimal value into 
 an hexadecimal charactere (0-F). The chip 27C256 act as an BCD to 7-segment Display Decoders and map a decimal value to 
 its equivalent in hexadecimal.The rest of the addresse lines on the EPROM are set to zero e.g (A4-A14, not used and forced to zero). 
 
 The first 32 words of the EPROM (addresses $00000000 - $00000010) are encoded to represent the hexadecimal 
 value 0 to F (7 segments representation of the decimal value present on the address line A0-A3, including 
-the decimal point). The value must take into consideration the type of 7-seg display (common cathode or comon anode)
+the decimal point).
+
+The value must take into consideration the type of 7-seg display (common cathode or comon anode)
 PS Adresses $00000010 - $00000020 can also be populated with 7 segments code for common anode) if this is the case, 
 we can add an single switch to set +5/GND logic 1 or zero to A4 the switch will toggle between comon cathode or comon anode, if 
 the 7-segment displays type were to be changed.
@@ -369,6 +370,18 @@ The first part of the table is the decoding for comon cathode display and the se
 for comon anode.
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD-7Segments.PNG?raw=true)
+
+EPROM outputs connect to:
+**7-Segment**      | EPROM data bus 
+-------------------|-----------------------------------------------------
+**a**              | D0
+**b**              | D1
+**c**              | D2 
+**d**              | D3
+**e**              | D4
+**f**              | D5
+**g**              | D6
+**dot**            | D7
 
 Both 7 segs displays are common cathode, each displays will be lit during a short period
 when a signal is sent (+5V) to the corresponding transistor to turn on the display. 
