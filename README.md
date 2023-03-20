@@ -324,7 +324,7 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
 
   HEF4060 functional diagram 
   
-  * Note that the outputs Q0 - Q2, Q10 are missing frim the functional diagram 
+  * Note that the outputs Q0 - Q2, Q10 are missing from the functional diagram 
   ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060_Functional_diagram.PNG?raw=true)
 
 
@@ -336,9 +336,12 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
 
 7 Segements multiplexing. 
 
-Display the memory value `COPIED OVER` (16 bits, 2 bytes) on the address lines (A0-A14). 
-The word/value is present on the 8 bits data lines (first 4 bits D0-D3 represent the char number 1 (U4)
-and last 4 bits (D4-D7) for char number 2 (U19).
+Display the memory content `COPIED OVER` (16 bits, 2 bytes) from the address lines (A0-A14). 
+The word/value is present on the 8 bits data lines (first 4 LSB bits D0-D3 represent the first byte 
+and last 4 bits MSB (D4-D7) for the last byte of data 
+For example, if the first EPROM source address $0000 contains the value $0A (00001010 in binary), 
+D0-D3 will represent the hex value A and D4-D7 the hex value 0.
+
  
 The IC 74LS157 allow to select the less significant 4 bits (D0-D3) or the last most 
 significant bit (D4-D7) bits of the data bus.
