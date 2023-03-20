@@ -364,7 +364,9 @@ BCD to hex representation on an 7-segment display
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD%207-seg%20decoder.PNG?raw=true)
 
-Looking at the first address value FC hex (11111100 in binary) the LSB is 1100 (hex C) and the MSB is 11111 (hex F) 
+The table below represent the addresse lines A0 - A4 and the 7-segements decoding. 
+The first part of the table is the decoding for comon cathode display and the second part is the decoding 
+for comon anode.
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD-7Segments.PNG?raw=true)
 
