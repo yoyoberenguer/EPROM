@@ -288,7 +288,7 @@ pressed
 
 
 
-The below diagram represent the 15-bits binary counter (A0-A14) made up from different components 
+The below diagram represent the 15-bits binary counter (A0-A14) made up from different chips 
 
 - SN74F163N (4 bit synchronous counter) flip-flops triggering on the rising (positive-going) edge of CLK.
   The clear function is synchronous, and a low logic level at the clear (CLR) input sets all four of the flip-flop outputs
@@ -313,9 +313,9 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
  To be noted:
  * SN74F163N flip flops trigger on rising edge while the DM74LS112A & HEF4060B are negative edge triggering, this is 
    important to know in order to avoid a de-synchronization of the address bus through out the bits Q0-Q2, Q10, Q14, Q15.
- * Extra JK flip flop Q10, Q14, Q15 added to the counter are build in asynchronous mode contrasting with (HEF4060B & SN74F163N), but 
-   this minor change will not affect the binary count and frequencies. 
- * Q15 is hight when the count has reached the last address 3FFFF (EPROM 256K), Q16 is reserved for 512K EPROM (version 2.0). 
+ * Extra JK flip flop outputs Q10, Q14, Q15 added to the counter are build in asynchronous mode contrasting with 
+   (HEF4060B & SN74F163N).This minor change will not affect the binary count and address frequencies. 
+ * Q15 is hight when the count has reached the last address 7FFF (EPROM 256K), Q16 is reserved for 512K EPROM (version 2.0). 
  
  
   HEF4060 pinout 
