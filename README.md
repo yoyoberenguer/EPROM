@@ -336,30 +336,39 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
 
 7 Segements multiplexing. 
 
-Display the memory content `COPIED OVER` (16 bits, 2 bytes) from the address lines (A0-A14). 
-The word/value is present on the 8 bits data lines (first 4 LSB bits D0-D3 represent the first byte 
-and last 4 bits MSB (D4-D7) for the last byte of data 
-For example, if the first EPROM source address $0000 contains the value $0A (00001010 in binary), 
+Display the memory content `COPIED OVER` to the target EPROM (16 bits, 2 bytes) from the address lines (A0-A14). 
+The word/value is present on the 8 bits data lines (first 4 LSB bits D0-D3 represent the first byte (char)
+and last 4 bits MSB (D4-D7) for the last char.
+
+For example, if the source EPROM address $0000 contains the value $0A (00001010 in binary), 
 D0-D3 will represent the hex value A and D4-D7 the hex value 0.
 
- 
-The IC 74LS157 allow to select the less significant 4 bits (D0-D3) or the last most 
-significant bit (D4-D7) bits of the data bus.
+The chip 74LS157 is a quad 2 inputs multiplexer allowing to split the data present on the data bus D0-D7 
+into two nibbles of data, the less significant bits (D0-D3) and the most significant bit (D4-D7).
 
-Each 4 bits represent the char recorded in the memory cells, 4 bits for a decimal value (0-16 or 0-F hex). 
+Each 4 bits values represent the char recorded in the EPROM memory cells, 4 bits for a decimal value (0-16 or 0-F hex). 
 This decimal value is used on the addresss lines (A0-A3) of the 27C256 EPROM IC to convert the decimal value into 
-an hexadecimal charactere (0-F). 
-
-The EPROM is used as a decoder BCD to HEX by mapping a decimal values.
-The rest of the addresse lines on the EPROM are set to zero e.g (A4-A14). 
+an hexadecimal charactere (0-F). The chip 27C256 act as an BCD to 7-segment Display Decoders and map a decimal value to 
+its equivalent in hexadecimal.The rest of the addresse lines on the EPROM are set to zero e.g (A4-A14, not used and forced to zero). 
 
 The first 32 words of the EPROM (addresses $00000000 - $00000010) are encoded to represent the hexadecimal 
-value 0 to F (7 segments representation of the decimal value present on the address bus A0-A3, including 
-the decimal point). The value must take into consideration the type of 7-seg display (common cathode or anode)
-PS Adresses $00000000 - $00000020 can also be populated with 7 segments code for common anode) if this is the case
-we can add an single switch to set 1 or zero to A5 (two select both types of display common cathode or common annode)
+value 0 to F (7 segments representation of the decimal value present on the address line A0-A3, including 
+the decimal point). The value must take into consideration the type of 7-seg display (common cathode or comon anode)
+PS Adresses $00000010 - $00000020 can also be populated with 7 segments code for common anode) if this is the case, 
+we can add an single switch to set +5/GND logic 1 or zero to A4 the switch will toggle between comon cathode or comon anode, if 
+the 7-segment displays type were to be changed.
 
-Both 7 segs displays are common annode, each displays will be lit during a short period
+For example: 
+The below image represent the data of an EPROM addresses from $00000000 to $00000010, the data map the conversion
+BCD to hex representation on an 7-segment display 
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD%207-seg%20decoder.PNG?raw=true)
+
+Looking at the first address value FC hex (11111100 in binary) the LSB is 1100 (hex C) and the MSB is 11111 (hex F) 
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD-7Segments.PNG?raw=true)
+
+Both 7 segs displays are common cathode, each displays will be lit during a short period
 when a signal is sent (+5V) to the corresponding transistor to turn on the display. 
 As the transistors Q2 and Q4 are connected to Q and ~{Q} they will be operational at different time.
 CLK must be > 60hz to avoid flickering between U4 & U19 (HDSP-7503)
