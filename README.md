@@ -361,7 +361,7 @@ the 7-segment displays type were to be changed.
 
 For example: 
 The below image represent the data of an EPROM addresses from $00000000 to $00000010, the data map the conversion
-BCD to hex representation on an 7-segment display 
+BCD to hex representation on an 7-segment display (comon cathode)
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD%207-seg%20decoder.PNG?raw=true)
 
