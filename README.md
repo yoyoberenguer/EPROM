@@ -366,8 +366,8 @@ BCD to hex representation on an 7-segment display
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD%207-seg%20decoder.PNG?raw=true)
 
 The table below represent the addresse lines A0 - A4 and the 7-segements decoding. 
-The first part of the table is the decoding for comon cathode display and the second part is the decoding 
-for comon anode.
+The first part of the table is the decoding for comon cathode display and the second part addresses starting 
+at 00000010 to 0000001F is the decoding for comon anode.
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD-7Segments.PNG?raw=true)
 
