@@ -386,10 +386,10 @@ EPROM outputs connect to:
 Both 7 segs displays are common cathode, each displays will be lit during a short period
 when a signal is sent (+5V) to the corresponding transistor to turn on the display. 
 As the transistors Q2 and Q4 are connected to Q and ~{Q} they will be operational at different time.
-CLK must be > 60hz to avoid flickering between U4 & U19 (HDSP-7503)
+CLK must be > 60hz to avoid flickering between the 7-segs HDSP-7503
 
 The IC 74LS112 (JK flip flop) is producing a clock signal (half of the CLK frequency) and provide
-a signal to turn on and off the 7 segments displays alternatively 
+a signal to turn on and off the 7 segments displays alternatively.
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/Multiplexing_diagram.PNG?raw=true)
 
