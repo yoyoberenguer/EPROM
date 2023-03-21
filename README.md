@@ -450,3 +450,34 @@ output is +5V
 **Data validation**
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/Validation_stage.PNG?raw=true)
+
+
+The NE555 is used in bistable mode to stop the 15-bit counter when a mismatch error is detected. 
+A mismatch can occure if the WORD copied in the target EPROM differs from the original WORD 
+fron the source EPROM during the validation process. If the a mismatch occure, the main counter needs to 
+stop incrementing the address values (A0-A15) in order to perform 3 sequetial retries. 
+The main counter can resume when the mismatch is no longer occuring (if the copy is identical in both 
+EPROMS or 3 retry have been performed). 
+
+To resume: 
+When a mismatch occure, +5v signal is sent to the NE555 pin 2 (Treshold) and set the output Q (pin 3) 
+to a high level +5v (CounterLock signal)
+After 3 retry (address bus A0 - A15 remain unchanged due to the fact that the counter is stopped), the flip flop 
+will count from zero to 3 (NAND connected to pin ~{Q0} and Q1 to valid the count x3) and a low 
+signal will be sent to the NE555 pin 4 (reset) to toggle to NE555 ouput Q pin 3 to zero volt. 
+
+Toggling the ouput to zero volt will trigger the counter to resume from the previous address.
+The 360R resistor and the 220pF capacitor at the NE555 output will trigger a reset to the flip flop x3 counter via 
+pin 15. The time constant RC is set for 80ns.
+
+Note that the NAND output (LoopCount) can be connected directly to the flip flip x3 counter to reset it instantaneously 
+however I did not opt for that scenario due to the fact that this will trigger a low pulse (LoopCount) at the NAND output with 
+a length of 10-20ns and this will not be tolerated by the NE555 on pin 5 (reset). 
+
+t = -RCln(1/2) and RC = -t/ln(1/2)
+ex for 40ns C=160pF and R=360; for 80ns R=360 and C=320pF 
+We are using a 220pF value and this gives us 60ns delay after the count of 3 by the flip flop 
+LoopCount will remain low during at least 60ns before the reset
+ 
+
+
