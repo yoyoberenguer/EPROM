@@ -330,6 +330,7 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/Counter.PNG?raw=true)
 
+---
 
 ### Display multiplexer 7-segments
 
@@ -401,4 +402,4 @@ a signal to turn on and off the 7 segments displays alternatively.
 **Diagram**
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/Multiplexing_diagram.PNG?raw=true)
 
-
+---
