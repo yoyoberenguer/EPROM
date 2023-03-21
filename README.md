@@ -377,7 +377,7 @@ at 00000010 to 0000001F is the decoding for comon anode.
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD-7Segments.PNG?raw=true)
 
-EPROM outputs connection with 7-segment display:
+**EPROM outputs connection with 7-segment display:**
 
 **7-Segment**      | EPROM data bus 
 -------------------|-----------------------------------------------------
@@ -398,6 +398,7 @@ CLK must be > 60hz to avoid flickering between the 7-segs HDSP-7501
 The IC 74LS112 (JK flip flop) is producing a clock signal (half of the CLK frequency) and provide
 a signal to turn on and off the 7 segments displays alternatively.
 
+**Diagram**
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/Multiplexing_diagram.PNG?raw=true)
 
 
