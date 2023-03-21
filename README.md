@@ -377,7 +377,8 @@ at 00000010 to 0000001F is the decoding for comon anode.
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD-7Segments.PNG?raw=true)
 
-EPROM outputs connect to:
+EPROM outputs connection with 7-segment display:
+
 **7-Segment**      | EPROM data bus 
 -------------------|-----------------------------------------------------
 **a**              | D0
