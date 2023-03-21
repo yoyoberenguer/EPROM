@@ -479,5 +479,26 @@ ex for 40ns C=160pF and R=360; for 80ns R=360 and C=320pF
 We are using a 220pF value and this gives us 60ns delay after the count of 3 by the flip flop 
 LoopCount will remain low during at least 60ns before the reset
  
+Mismatch(output of the comparator) is setting the clock for the loop
+ counting circuit(2x JK flip flop)
+Mismatch output will be set to zero during PROGRAM MODE cycle and set to
+ +5V when the WORDS mismatch during 
+the VERIFY MODE, creating a raising edge on the flip flop counter. 
+
+74LS00 (NAND gate) will output +0V when the counter has at least 3 
+iterations.If the NAND output is connected directly to the flip flop reset through 
+pin 15 of both JK, this will trigger the reset count to zero. However the NAND will be at zero volt
+ during 20ns and will comeback to +5V.This signal will be too short to handle with the next stage.
+
+In our scenario I have opted to an asynchrone reset triggered by a
+ filter RC with a time constant around 60ns (delay after the NAND output switching to a low state). 
+
+Q0  |  ~{Q0}  |  Q1   | LoopCount  not(~{Q0} & Q1})
+0   |    1    |   0   |   1
+1   |    0    |   0   |   1 
+0   |    1    |   1   |   0  ==> Third iteration LoopCount = 0V 
+1   |    0    |   1   |   1  Not happening the Reset of the
+ 
+flip flop is triggered by ResetLoop signal 
 
 
