@@ -475,6 +475,7 @@ however I did not opt for that scenario due to the fact that this will trigger a
 a length of 10-20ns and this will not be tolerated by the NE555 on pin 5 (reset). 
 
 t = -RCln(1/2) and RC = -t/ln(1/2)
+
 ex for 40ns C=160pF and R=360; for 80ns R=360 and C=320pF 
 We are using a 220pF value and this gives us 60ns delay after the count of 3 by the flip flop 
 LoopCount will remain low during at least 60ns before the reset
