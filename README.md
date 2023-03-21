@@ -403,3 +403,45 @@ a signal to turn on and off the 7 segments displays alternatively.
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/Multiplexing_diagram.PNG?raw=true)
 
 ---
+
+### EPROM flashing 
+
+The right EPROM is the source EPROM containing all the data that we want to transfer to 
+the target EPROM on the left. 
+The address bus A0 - A14 is common for both EPROM but it is also connected to the 15-bit counter used 
+for incrementing the current addresses where to read the data. 
+The data bus D0 - D7 is also comon to both EPROM and connected to the Multiplexing stage in order to display the 
+value loaded on the bus from the source EPROM. 
+
+During the rising edge and the first demi period of the clock signal (CLK), 
+the source EPROM in READ mode, transfer the data to the data bus D0-D7 and at the same time, 
+the destination EPROM is in PROGRAM mode. Please check the table below for the operation modes that 
+explain how to set this modes.
+We can see that the EPROM in READ mode will output the data on the data bus **Data out** and the EPROM in 
+PROGRAM mode will receive the data **Data in**
+
+These data are recorder into a 8 bits register made with 2 x 74LS173 IC when a pulse 
+signal NOT pulse is sent to the common clock of the IC 74LS173 (pin 7). 
+
+The NOT pulse signal (100us) will trigger the values present on data bus D0 - D7 to 
+Q0 - Q7 (74LS688 of the comparator inputs) from Q0-Q3 of both 74LS173 registers.
+
+The 74LS173 registers will keep the WORD until the next NOT pulse (next writing period), 
+the WORD can then be compared with the SOURCE EPROM D0-D7 values during the VERIFY MODE
+
+At the same time a positive pulse is sent to the EPROM (100us) on NOT CE entry to write the 
+WORD in the EPROM at the current address A0-A14. 
+
+On the falling edge of the main clock cycle, the DEST EPROM is shifting into the VERIGFY MODE and 
+Q0 - Q7 present the data on the DATA bus (recorder WORD), While the source EPROM shift into the STANDBY MODE.
+The WORD from the target EPROM is then compared with the 8-bit register (values present on Q0-Q7)
+
+If both WORDS are identical the output (pin 19) of the comparator 74LS688 is low otherwise the 
+output is +5V 
+
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/27C256_operating_modes.PNG?raw=true)
+
+
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/Flashing_diagram.PNG?raw=true)
