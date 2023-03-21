@@ -340,8 +340,8 @@ Display the memory content `COPIED OVER` to the target EPROM (16 bits, 2 bytes) 
 The word/value is present on the 8 bits data lines (first 4 LSB bits D0-D3 represent the first byte (char)
 and last 4 bits MSB (D4-D7) for the last char.
 
-For example, if the source EPROM address $0000 contains the value $0A (00001010 in binary), 
-D0-D3 will represent the hex value A and D4-D7 the hex value 0.
+For example, if the source EPROM address $0000 contains the value $0A (#00001010 in binary), 
+D0-D3 (#1010) will represent the hex value A and D4-D7 the hex value 0 (#0000).
 
 The chip 74LS157 is a quad 2 inputs multiplexer allowing to split the data present on the data bus D0-D7 
 into two nibbles of data, the less significant bits (D0-D3) and the most significant bit (D4-D7).
@@ -356,8 +356,8 @@ the decimal point).
 
 The value must take into consideration the type of 7-seg display (common cathode or comon anode)
 PS Adresses $00000010 - $00000020 can also be populated with 7 segments code for common anode) if this is the case, 
-we can add an single switch to set +5/GND logic 1 or zero to A4 the switch will toggle between comon cathode or comon anode, if 
-the 7-segment displays type were to be changed.
+we can add an single switch to set +5/GND logic 1 or zero to the EPROM A4 input that way, the switch will toggle between
+comon cathode or comon anode displays.
 
 For example: 
 The below image represent the data of an EPROM addresses from $00000000 to $00000010, the data map the conversion
