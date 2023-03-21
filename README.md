@@ -443,7 +443,8 @@ output is +5V
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/27C256_operating_modes.PNG?raw=true)
 
 
-
+**Source EPROM and Target EPROM (left)**
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/Flashing_diagram.PNG?raw=true)
 
+**Data validation**
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/Validation_stage.PNG?raw=true)
