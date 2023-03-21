@@ -393,7 +393,7 @@ at 00000010 to 0000001F is the decoding for comon anode.
 
 Both 7 segs displays are common anode, each displays will be lit during a short period
 when a signal is sent (+5V) to the corresponding transistor to turn on the display. 
-As the transistors Q2 and Q4 are connected to Q and ~{Q} they will be operational at different time.
+As the transistors Q2 and Q4 are connected to Q and NOT Q they will be operational at different time.
 CLK must be > 60hz to avoid flickering between the 7-segs HDSP-7501
 
 The IC 74LS112 (JK flip flop) is producing a clock signal (half of the CLK frequency) and provide
@@ -463,7 +463,7 @@ To resume:
 When a mismatch occure, +5v signal is sent to the NE555 pin 2 (Treshold) and set the output Q (pin 3) 
 to a high level +5v (CounterLock signal)
 After 3 retry (address bus A0 - A15 remain unchanged due to the fact that the counter is stopped), the flip flop 
-will count from zero to 3 (NAND connected to pin ~{Q0} and Q1 to valid the count x3) and a low 
+will count from zero to 3 (NAND connected to pin NOT Q0 and Q1 to valid the count x3) and a low 
 signal will be sent to the NE555 pin 4 (reset) to toggle to NE555 ouput Q pin 3 to zero volt. 
 
 Toggling the ouput to zero volt will trigger the counter to resume from the previous address.
@@ -493,7 +493,8 @@ pin 15 of both JK, this will trigger the reset count to zero. However the NAND w
 In our scenario I have opted to an asynchrone reset triggered by a
  filter RC with a time constant around 60ns (delay after the NAND output switching to a low state). 
 
-Q0  |  ~{Q0}  |  Q1   | LoopCount  not(~{Q0} & Q1})
+Q0  |  NOT Q0 |  Q1   | LoopCount NOT Q0 & Q1
+----|---------|-------|--------------------------------
 0   |    1    |   0   |   1
 1   |    0    |   0   |   1 
 0   |    1    |   1   |   0  ==> Third iteration LoopCount = 0V 
