@@ -458,16 +458,27 @@ A mismatch can occure if the Byte copied in the target EPROM differs from the or
 fron the source EPROM during the validation process. If the a mismatch occure, the main counter needs to 
 stop incrementing the address values (A0-A15) in order to perform 3 sequetial retries. 
 The main counter can resume when the mismatch is no longer occuring (if the copy is identical in both 
-EPROMS or 3 retry have been performed). 
+EPROMS or 3 retries have been performed). 
 
 To resume: 
-When a mismatch occure, +5v signal is sent to the NE555 pin 2 (Treshold) and set the output Q (pin 3) 
-to a high level +5v (CounterLock signal)
-After 3 retry (address bus A0 - A15 remain unchanged due to the fact that the counter is stopped), the flip flop 
-will count from zero to 3 (NAND connected to pin NOT Q0 and Q1 to valid the count x3) and a low 
-signal will be sent to the NE555 pin 4 (reset) to toggle to NE555 ouput Q pin 3 to zero volt. 
 
-Toggling the ouput to zero volt will trigger the counter to resume from the previous address.
+When a mismatch occure, a +5v signal is sent to the NE555 pin 2 (treshold) to set the output Q (pin 3) 
+to a high level +5v (**CounterLock signal**).
+The **CounterLock signal** will stop the main counter to increment the address bus A0 - A14.
+As a byte mismatch has occured, the comparator 74ls688 output NOT P=Q will goes high. The AND gate will then 
+change state when NOT CLK goes HIGH (second half of the clock signal **VERIFY MODE**). 
+When the AND gate 74ls08 change state, a raising edge signal is sent to the input 1 of the 74LS112 flip flop initiating the re-try counting stage.
+Both 74ls112 will count from zero to 3 and will be stopped by a NAND gate (74LS00) connected to both output pin NOT Q0 and Q1 to valid 3 retries). When the flip flop counter stage reaches 3 retries, the 
+NAND gate 74LS00 will trigger a low level signal **loopCount** (see table below) to reset the NE555 oscillator resulting in pin 3 (Q) to change state (signal **CounterLock**).
+**CounterLock** signal being now low, the main counter A0-A14 will resume incrementing the address bus
+
+Q0  |  NOT Q0 |  Q1   | LoopCount NOT Q0 & Q1
+----|---------|-------|--------------------------------
+0   |    1    |   0   |   1
+1   |    0    |   0   |   1 
+0   |    1    |   1   |   0  ==> Third iteration LoopCount = 0V 
+1   |    0    |   1   |   1  Not happening the Reset of the
+
 The 360R resistor and the 220pF capacitor at the NE555 output will trigger a reset to the flip flop x3 counter via 
 pin 15. The time constant RC is set for 80ns.
 
@@ -495,12 +506,7 @@ pin 15 of both JK, this will trigger the reset count to zero. However the NAND w
 In our scenario I have opted to an asynchrone reset triggered by a
  filter RC with a time constant around 60ns (delay after the NAND output switching to a low state). 
 
-Q0  |  NOT Q0 |  Q1   | LoopCount NOT Q0 & Q1
-----|---------|-------|--------------------------------
-0   |    1    |   0   |   1
-1   |    0    |   0   |   1 
-0   |    1    |   1   |   0  ==> Third iteration LoopCount = 0V 
-1   |    0    |   1   |   1  Not happening the Reset of the
+
  
 flip flop is triggered by ResetLoop signal 
 
