@@ -503,4 +503,18 @@ Q0  |  NOT Q0 |  Q1   | LoopCount NOT Q0 & Q1
  
 flip flop is triggered by ResetLoop signal 
 
+Gate 74LS08 (AND) output is high when both entries are +5V 
+(WORDS MISMATCH P!=Q & NOT CLK period raising edge (VERIFIY MODE) 
+  NOT CLK | P=Q! | Mismatch 
+  --------|------|--------------
+  0       |  0   |   0    ==> CLK = 0V & WORD OK 
+  0       |  1   |   0    ==> CLK = 0V & WORD MISMATCH (PROGRAM MODE)
+  1       |  0   |   0    ==> CLK = 5V & WORD OK (VERIFY MODE OK)
+  1       |  1   |   1    ==> CLK = 5V & WORD MISMATCH (VERIFY MODE NOT OK) loop 3 times
 
+74LS688 Output is high (+5v) when P!=Q
+P=Q output is (0V)
+If the WORDS mismatch the output of 74LS688 will remains high and the led will be lit. 
+This scenario can also happen during the PROGRAMA MODE, this is why
+we need to add an AND gate 74LS08 at the output of the comparator
+to lit the led only during the VERIFY MODE when the WORDS mismatch.
