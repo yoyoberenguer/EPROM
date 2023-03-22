@@ -479,21 +479,20 @@ Q0  |  NOT Q0 |  Q1   | LoopCount NOT Q0 & Q1
 1   |    0    |   1   |   1  Not happening the Reset of the
 
 The 360R resistor and the 220pF capacitor connected at the NE555 output pin 3 formed a timer with 
-a time constant RC of 40-80ns. When the voltage accross the Capacitor goes down below the low level 
-threshold on the reset pin 15 (NOT R) chip 74LS112, it will trigger a reset of both JK flip flops. 
+a time constant RC. When the voltage accross the Capacitor goes down below the low level 
+threshold (VIL) on the reset pin 15 (NOT R) chip 74LS112, it will trigger a reset of both JK flip flops. 
 
 Note that the NAND output (**LoopCount**) can be connected directly to the flip flip counters (74LS112) to reset it instantaneously via the resets pin 15 (NOT R) of both chips.
 However I did not opt for that scenario due to the fact that this will trigger a low pulse (via **LoopCount**) at the NAND output with a maximum width of 10-20ns and this lapse of time will not be  tolerated by the NE555 on pin 4 (reset). The reset will be ignored by the NE555 due to the propagation delay not being sufficient.
 
 **RC time constant**
+VIL 0.8v (LOW Level Input Voltage)  74LS112 
+VOH 3.3v (High-level output voltage) NE555 
+VIL = VOH * exp(-t/RC)
+t = -RCln(0.8/3.3) and RC = -t/ln(0.8/3.3)
 
-t = -RCln(1/2) and RC = -t/ln(1/2)
-```
-ex for 40ns C=160pF and R=360; 
-for 80ns R=360 and C=320pF 
-```
-We are using a 220pF value and this gives us 60ns delay after the count of 3 by the flip flop 
-**LoopCount** signal will remain at a low level during at least 60ns before reset
+We are using a 220pF value and this gives us 112ns delay after the count of 3 by the flip flop 
+**LoopCount** signal will remain at a low level during at least 112ns before triggering the reset
  
 Mismatch(output of the comparator) is setting the clock for the loop
  counting circuit(2x JK flip flop)
