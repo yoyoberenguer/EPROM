@@ -466,7 +466,7 @@ When a mismatch occure, a +5v signal is sent to the NE555 pin 2 (treshold) to se
 to a high level +5v (**CounterLock signal**).
 The **CounterLock signal** will stop the main counter to increment the address bus A0 - A14.
 As a byte mismatch has occured, the comparator 74ls688 output NOT P=Q will goes high. The AND gate will then 
-change state when NOT CLK goes HIGH (second half of the clock signal **VERIFY MODE**). 
+change state when NOT CLK goes HIGH (second half of the clock signal period also known as the **VERIFY MODE**). 
 When the AND gate 74ls08 change state, a raising edge signal is sent to the input 1 of the 74LS112 flip flop initiating the re-try counting stage.
 Both 74ls112 will count from zero to 3 and will be stopped by a NAND gate (74LS00) connected to both output pin NOT Q0 and Q1 to valid 3 retries). When the flip flop counter stage reaches 3 retries, the 
 NAND gate 74LS00 will trigger a low level signal **loopCount** (see table below) to reset the NE555 oscillator resulting in pin 3 (Q) to change state (signal **CounterLock**).
