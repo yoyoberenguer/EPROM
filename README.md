@@ -3,17 +3,18 @@
 
 The EPROMs programmer prototype describe in this Electronic article is designed to flash 
 EPROMs memories (read-only memory whose contents can be erased by ultraviolet light 
-or other means and reprogrammed using a pulsed voltage) such as the SMT27C256B from Texas instrument. 
+or other means and reprogrammed 
+using a pulsed voltage) such as the SMT27C256B from Texas instrument. 
 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/M27C256/27C256.jpg)
 
 The chip SMT27C256B is composed of 256K bit electrically Programmable Read Only Memory (EPROM).  
-The device is organized as 32K words by 8 bits  (32K  bytes). 
+The device is organized as 32K by 8 bits  (32K  bytes). 
 
-The version 1.0 is compatible only with the memory chip SMT27C256B (256M-Bytes), however the version 2.0 will
+The version 1.0 is compatible only with the memory chip SMT27C256B (256k-bit), however the version 2.0 will
 allow larger chip, such as the SMT27C512 to be recognized during the boot sequence with its electronic signature  
-(mannufacturer and product code). The SMT27C512 series are 65536 by 8-bit(524 288-bit), ultraviolet (UV) 
+(mannufacturer and product code). The SMT27C512 series are 65536 by 8-bit, ultraviolet (UV) 
 light erasable, electrically programmable read-only  memories.
 
 The version 3.0 (still on the drawing board) will be desgin with the 8-bit microprocessor Zilog Z80 
@@ -140,7 +141,7 @@ Required capacitors with low ESR (tantalum preferably) 50V
 ### Programming pulse 
 
 The EPROM SMT27C256 datasheet requires 95 - 100 micro seconds for the chip Enable program pulse width to write
-a single word. This value may vary for each memory type and device operation mode.
+a single byte. This value may vary for each memory type and device operation mode.
 To comply with a larger number of products, the writing pulse width will be variable to match 
 the component programming requirement.
 
@@ -150,7 +151,7 @@ programming pulse frequency that can be delivered to the EPROM.
 Based on consecutives minimal period of 95us the maximum frequency is around 10Khz (without taking into account 
 the propagation delays and the rise and fall times of each signals).
 
-with a fixed time of 95us per word, the best timing for programming the SMT27C256 would be 32768 * 100us ≈ 3.2 seconds
+with a fixed time of 95us per byte, the best timing for programming the SMT27C256 would be 32768 * 100us ≈ 3.2 seconds
 This is by far an approximation and to stay within a safe margin for reliability, we will use a lower frequency to take
 into account the rise and fall times of each signals and the various chip access time (data bus and address line)
 
@@ -338,7 +339,7 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
 7 Segements multiplexing. 
 
 Display the memory content `COPIED OVER` to the target EPROM (16 bits, 2 bytes) from the address lines (A0-A14). 
-The word/value is present on the 8 bits data lines (first 4 LSB bits D0-D3 represent the first byte (char)
+The byte is present on the 8 bits data lines (first 4 LSB bits D0-D3 represent the first byte (char)
 and last 4 bits MSB (D4-D7) for the last char.
 
 For example, if the source EPROM address $0000 contains the value $0A (#00001010 in binary), 
@@ -351,7 +352,7 @@ into two nibbles of data, the less significant bits (D0-D3) and the most signifi
 an hexadecimal charactere (0-F). The chip 27C256 act as an BCD to 7-segment Display Decoders and map a decimal value to 
 its equivalent in hexadecimal.The rest of the addresse lines on the EPROM are set to zero e.g (A4-A14, not used and forced to zero). 
 
-The first 32 words of the EPROM (addresses $00000000 - $00000010) are encoded to represent the hexadecimal 
+The first 32 bytes of the EPROM (addresses $00000000 - $00000010) are encoded to represent the hexadecimal 
 value 0 to F (7 segments representation of the decimal value present on the address line A0-A3, including 
 the decimal point).
 
@@ -426,17 +427,17 @@ signal NOT pulse is sent to the common clock of the IC 74LS173 (pin 7).
 The NOT pulse signal (100us) will trigger the values present on data bus D0 - D7 to 
 Q0 - Q7 (74LS688 of the comparator inputs) from Q0-Q3 of both 74LS173 registers.
 
-The 74LS173 registers will keep the WORD until the next NOT pulse (next writing period), 
-the WORD can then be compared with the SOURCE EPROM D0-D7 values during the VERIFY MODE
+The 74LS173 registers will keep the Byte until the next NOT pulse (next writing period), 
+the Byte can then be compared with the SOURCE EPROM D0-D7 values during the VERIFY MODE
 
 At the same time a positive pulse is sent to the EPROM (100us) on NOT CE entry to write the 
-WORD in the EPROM at the current address A0-A14. 
+Byte in the EPROM at the current address A0-A14. 
 
 On the falling edge of the main clock cycle, the DEST EPROM is shifting into the VERIGFY MODE and 
-Q0 - Q7 present the data on the DATA bus (recorder WORD), While the source EPROM shift into the STANDBY MODE.
-The WORD from the target EPROM is then compared with the 8-bit register (values present on Q0-Q7)
+Q0 - Q7 present the data on the DATA bus (recorder Byte), While the source EPROM shift into the STANDBY MODE.
+The Byte from the target EPROM is then compared with the 8-bit register (values present on Q0-Q7)
 
-If both WORDS are identical the output (pin 19) of the comparator 74LS688 is low otherwise the 
+If both Byte are identical the output (pin 19) of the comparator 74LS688 is low otherwise the 
 output is +5V 
 
 
@@ -453,7 +454,7 @@ output is +5V
 
 
 The NE555 is used in bistable mode to stop the 15-bit counter when a mismatch error is detected. 
-A mismatch can occure if the WORD copied in the target EPROM differs from the original WORD 
+A mismatch can occure if the Byte copied in the target EPROM differs from the original Byte 
 fron the source EPROM during the validation process. If the a mismatch occure, the main counter needs to 
 stop incrementing the address values (A0-A15) in order to perform 3 sequetial retries. 
 The main counter can resume when the mismatch is no longer occuring (if the copy is identical in both 
@@ -483,7 +484,7 @@ LoopCount will remain low during at least 60ns before the reset
 Mismatch(output of the comparator) is setting the clock for the loop
  counting circuit(2x JK flip flop)
 Mismatch output will be set to zero during PROGRAM MODE cycle and set to
- +5V when the WORDS mismatch during 
+ +5V when the Byte mismatch during 
 the VERIFY MODE, creating a raising edge on the flip flop counter. 
 
 74LS00 (NAND gate) will output +0V when the counter has at least 3 
@@ -504,17 +505,17 @@ Q0  |  NOT Q0 |  Q1   | LoopCount NOT Q0 & Q1
 flip flop is triggered by ResetLoop signal 
 
 Gate 74LS08 (AND) output is high when both entries are +5V 
-(WORDS MISMATCH P!=Q & NOT CLK period raising edge (VERIFIY MODE) 
+(Byte MISMATCH P!=Q & NOT CLK period raising edge (VERIFIY MODE) 
   NOT CLK | P=Q! | Mismatch 
   --------|------|--------------
-  0       |  0   |   0    ==> CLK = 0V & WORD OK 
-  0       |  1   |   0    ==> CLK = 0V & WORD MISMATCH (PROGRAM MODE)
-  1       |  0   |   0    ==> CLK = 5V & WORD OK (VERIFY MODE OK)
-  1       |  1   |   1    ==> CLK = 5V & WORD MISMATCH (VERIFY MODE NOT OK) loop 3 times
+  0       |  0   |   0    ==> CLK = 0V & Byte OK 
+  0       |  1   |   0    ==> CLK = 0V & Byte MISMATCH (PROGRAM MODE)
+  1       |  0   |   0    ==> CLK = 5V & Byte OK (VERIFY MODE OK)
+  1       |  1   |   1    ==> CLK = 5V & Byte MISMATCH (VERIFY MODE NOT OK) loop 3 times
 
 74LS688 Output is high (+5v) when P!=Q
 P=Q output is (0V)
-If the WORDS mismatch the output of 74LS688 will remains high and the led will be lit. 
+If the Byte mismatch the output of 74LS688 will remains high and the led will be lit. 
 This scenario can also happen during the PROGRAMA MODE, this is why
 we need to add an AND gate 74LS08 at the output of the comparator
-to lit the led only during the VERIFY MODE when the WORDS mismatch.
+to lit the led only during the VERIFY MODE when the Byte mismatch.
