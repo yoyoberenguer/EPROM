@@ -425,20 +425,19 @@ These data are recorder into a 8 bits register made with 2 x 74LS173 IC when a p
 signal NOT pulse is sent to the common clock of the IC 74LS173 (pin 7). 
 
 The NOT pulse signal (100us) will trigger the values present on data bus D0 - D7 to 
-Q0 - Q7 (74LS688 of the comparator inputs) from Q0-Q3 of both 74LS173 registers.
+the input Q0 - Q7 of the comparator.
 
-The 74LS173 registers will keep the Byte until the next NOT pulse (next writing period), 
-the Byte can then be compared with the SOURCE EPROM D0-D7 values during the VERIFY MODE
+The 74LS173 registers will keep the Byte read from the SOURCE EPROM until the next NOT pulse (next writing period), that byte can then be compared with the TARGET EPROM D0-D7 values during the VERIFY MODE (TARGET EPROM data bus being in **data out** mode)
 
-At the same time a positive pulse is sent to the EPROM (100us) on NOT CE entry to write the 
-Byte in the EPROM at the current address A0-A14. 
+At the same time a pulse is sent to the EPROM (100us) on NOT CE entry to write the 
+Byte in the TARGET EPROM at the current address A0-A14. 
 
-On the falling edge of the main clock cycle, the DEST EPROM is shifting into the VERIGFY MODE and 
-Q0 - Q7 present the data on the DATA bus (recorder Byte), While the source EPROM shift into the STANDBY MODE.
+On the falling edge of the main clock cycle, the TARGET EPROM is shifting into the VERIGFY MODE and 
+Q0 - Q7 present the data on the DATA bus (recorded byte), While the source EPROM shift into the STANDBY MODE.
 The Byte from the target EPROM is then compared with the 8-bit register (values present on Q0-Q7)
 
 If both Byte are identical the output (pin 19) of the comparator 74LS688 is low otherwise the 
-output is +5V 
+output +5V 
 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/27C256_operating_modes.PNG?raw=true)
@@ -514,7 +513,7 @@ flip flop is triggered by ResetLoop signal
 
 Gate 74LS08 (AND) output is high when both entries are +5V 
 (Byte MISMATCH P!=Q & NOT CLK period raising edge (VERIFIY MODE) 
-  NOT CLK | P=Q! | Mismatch 
+  NOT CLK | P=Q! | Mismatch value
   --------|------|--------------
   0       |  0   |   0    ==> CLK = 0V & Byte OK 
   0       |  1   |   0    ==> CLK = 0V & Byte MISMATCH (PROGRAM MODE)
