@@ -457,8 +457,7 @@ The NE555 is used in bistable mode to stop the 15-bit counter when a mismatch er
 A mismatch can occure if the Byte copied in the target EPROM differs from the original Byte 
 fron the source EPROM during the validation process. If the a mismatch occure, the main counter needs to 
 stop incrementing the address values (A0-A15) in order to perform 3 sequetial retries. 
-The main counter can resume when the mismatch is no longer occuring (if the copy is identical in both 
-EPROMS or 3 retries have been performed). 
+The main counter can resume when the mismatch is no longer occuring or when 3 retries have been performed. 
 
 To resume: 
 
@@ -479,13 +478,14 @@ Q0  |  NOT Q0 |  Q1   | LoopCount NOT Q0 & Q1
 0   |    1    |   1   |   0  ==> Third iteration LoopCount = 0V 
 1   |    0    |   1   |   1  Not happening the Reset of the
 
-The 360R resistor and the 220pF capacitor at the NE555 output will trigger a reset to the flip flop x3 counter via 
-pin 15. The time constant RC is set for 80ns.
+The 360R resistor and the 220pF capacitor connected at the NE555 output pin 3 formed a timer with 
+a time constant RC of 80ns. When the voltage accross the Capacitor goes down below the low level 
+threshold on the reset pin 15 (NOT R) chip 74LS112, it will trigger a reset of both JK flip flops. 
 
-Note that the NAND output (LoopCount) can be connected directly to the flip flip x3 counter to reset it instantaneously 
-however I did not opt for that scenario due to the fact that this will trigger a low pulse (LoopCount) at the NAND output with 
-a length of 10-20ns and this will not be tolerated by the NE555 on pin 5 (reset). 
+Note that the NAND output (**LoopCount**) can be connected directly to the flip flip counters (74LS112) to reset it instantaneously via the resets pin 15 (NOT R) of both chips.
+However I did not opt for that scenario due to the fact that this will trigger a low pulse (via **LoopCount**) at the NAND output with a maximum width of 10-20ns and this lapse of time will not be  tolerated by the NE555 on pin 4 (reset). The reset will be ignored by the NE555 due to the propagation delay not being sufficient.
 
+**RC time constant**
 t = -RCln(1/2) and RC = -t/ln(1/2)
 
 ex for 40ns C=160pF and R=360; for 80ns R=360 and C=320pF 
