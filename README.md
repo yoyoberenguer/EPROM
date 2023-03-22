@@ -455,17 +455,19 @@ output +5V
 The NE555 is used in bistable mode to stop the 15-bit counter when a mismatch error is detected. 
 A mismatch can occure if the Byte copied in the target EPROM differs from the original Byte 
 fron the source EPROM during the validation process. If the a mismatch occure, the main counter needs to 
-stop incrementing the address values (A0-A15) in order to perform 3 sequetial retries. 
-The main counter can resume when the mismatch is no longer occuring or when 3 retries have been performed. 
+stop incrementing the address values (A0-A14) in order to perform 3 sequetial retries. 
+The main counter can resume when the mismatch is no longer present or when 3 retries have been done. 
 
 To resume: 
 
 When a mismatch occure, a +5v signal is sent to the NE555 pin 2 (treshold) to set the output Q (pin 3) 
 to a high level +5v (**CounterLock signal**).
 The **CounterLock signal** will stop the main counter to increment the address bus A0 - A14.
+
 As a byte mismatch has occured, the comparator 74ls688 output NOT P=Q will goes high. The AND gate will then 
 change state when NOT CLK goes HIGH (second half of the clock signal period also known as the **VERIFY MODE**). 
-When the AND gate 74ls08 change state, a raising edge signal is sent to the input 1 of the 74LS112 flip flop initiating the re-try counting stage.
+When the AND gate 74ls08 change state, a raising edge signal is sent to the input 1 of the 74LS112 flip flop initiating the counting.
+
 Both 74ls112 will count from zero to 3 and will be stopped by a NAND gate (74LS00) connected to both output pin NOT Q0 and Q1 to valid 3 retries). When the flip flop counter stage reaches 3 retries, the 
 NAND gate 74LS00 will trigger a low level signal **loopCount** (see table below) to reset the NE555 oscillator resulting in pin 3 (Q) to change state (signal **CounterLock**).
 **CounterLock** signal being now low, the main counter A0-A14 will resume incrementing the address bus
@@ -474,15 +476,14 @@ Q0  |  NOT Q0 |  Q1   | LoopCount NOT Q0 & Q1
 ----|---------|-------|--------------------------------
 0   |    1    |   0   |   1
 1   |    0    |   0   |   1 
-0   |    1    |   1   |   0  ==> Third iteration LoopCount = 0V 
-1   |    0    |   1   |   1  Not happening the Reset of the
+0   |    1    |   1   |   0  ==> Third iteration LoopCount = 0V
+  
 
-The 360R resistor and the 220pF capacitor connected at the NE555 output pin 3 formed a timer with 
-a time constant RC. When the voltage accross the Capacitor goes down below the low level 
-threshold (VIL) on the reset pin 15 (NOT R) chip 74LS112, it will trigger a reset of both JK flip flops. 
+The 360R resistor and the 220pF capacitor connected at the NE555 output pin 3 form a timer with 
+a time constant RC. When the voltage accross the Capacitor goes below the low level 
+threshold (VIL) on the reset pin 15 (NOT R) chip 74LS112 both JK flip flops are reset. 
 
-Note that the NAND output (**LoopCount**) can be connected directly to the flip flip counters (74LS112) to reset it instantaneously via the resets pin 15 (NOT R) of both chips.
-However I did not opt for that scenario due to the fact that this will trigger a low pulse (via **LoopCount**) at the NAND output with a maximum width of 10-20ns and this lapse of time will not be  tolerated by the NE555 on pin 4 (reset). The reset will be ignored by the NE555 due to the propagation delay not being sufficient.
+Note that the NAND output (**LoopCount**) can be connected directly to the flip flip counters (74LS112) to reset it instantaneously via the reset pin 15 (NOT R) of both chips.However I did not opt for that scenario due to the fact that this will trigger a short low pulse via **LoopCount** at the NAND output with a maximum width of 10-20ns and this signal duration will not be tolerated by the NE555 on pin 4 (reset). The reset event will be ignored by the NE555 due to the signal hold time delay not being sufficient.
 ```
 **RC time constant**
 VIL 0.8v (LOW Level Input Voltage)  74LS112 
@@ -493,23 +494,9 @@ t = -RCln(0.8/3.3) and RC = -t/ln(0.8/3.3)
 We are using a 220pF value and this gives us 112ns delay after the count of 3 by the flip flop 
 **LoopCount** signal will remain at a low level during at least 112ns before triggering the reset
  
-Mismatch(output of the comparator) is setting the clock for the loop
- counting circuit(2x JK flip flop)
-Mismatch output will be set to zero during PROGRAM MODE cycle and set to
- +5V when the Byte mismatch during 
+Mismatch(output of the comparator) is setting the clock for the loop counting circuit(2x JK flip flop)
+Mismatch output will be set to zero during PROGRAM MODE cycle and set to +5V when the byte mismatch during 
 the VERIFY MODE, creating a raising edge on the flip flop counter. 
-
-74LS00 (NAND gate) will output +0V when the counter has at least 3 
-iterations.If the NAND output is connected directly to the flip flop reset through 
-pin 15 of both JK, this will trigger the reset count to zero. However the NAND will be at zero volt
- during 20ns and will comeback to +5V.This signal will be too short to handle with the next stage.
-
-In our scenario I have opted to an asynchrone reset triggered by a
- filter RC with a time constant around 60ns (delay after the NAND output switching to a low state). 
-
-
- 
-flip flop is triggered by ResetLoop signal 
 
 Gate 74LS08 (AND) output is high when both entries are +5V 
 (Byte MISMATCH P!=Q & NOT CLK period raising edge (VERIFIY MODE) 
