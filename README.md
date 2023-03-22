@@ -422,9 +422,9 @@ We can see that the EPROM in READ mode will output the data on the data bus **Da
 PROGRAM mode will receive the data **Data in**
 
 These data are recorder into a 8 bits register made with 2 x 74LS173 IC when a pulse 
-signal NOT pulse is sent to the common clock of the IC 74LS173 (pin 7). 
+signal (**NOT pulse**) is sent to the common clock of the IC 74LS173 (pin 7). 
 
-The NOT pulse signal (100us) will trigger the values present on data bus D0 - D7 to 
+The NOT pulse signal (100us) will push the values present on the data bus D0 - D7 to 
 the input Q0 - Q7 of the comparator.
 
 The 74LS173 registers will keep the Byte read from the SOURCE EPROM until the next NOT pulse (next writing period), that byte can then be compared with the TARGET EPROM D0-D7 values during the VERIFY MODE (TARGET EPROM data bus being in **data out** mode)
