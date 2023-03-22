@@ -484,13 +484,13 @@ threshold (VIL) on the reset pin 15 (NOT R) chip 74LS112, it will trigger a rese
 
 Note that the NAND output (**LoopCount**) can be connected directly to the flip flip counters (74LS112) to reset it instantaneously via the resets pin 15 (NOT R) of both chips.
 However I did not opt for that scenario due to the fact that this will trigger a low pulse (via **LoopCount**) at the NAND output with a maximum width of 10-20ns and this lapse of time will not be  tolerated by the NE555 on pin 4 (reset). The reset will be ignored by the NE555 due to the propagation delay not being sufficient.
-
+```
 **RC time constant**
 VIL 0.8v (LOW Level Input Voltage)  74LS112 
 VOH 3.3v (High-level output voltage) NE555 
 VIL = VOH * exp(-t/RC)
 t = -RCln(0.8/3.3) and RC = -t/ln(0.8/3.3)
-
+```
 We are using a 220pF value and this gives us 112ns delay after the count of 3 by the flip flop 
 **LoopCount** signal will remain at a low level during at least 112ns before triggering the reset
  
