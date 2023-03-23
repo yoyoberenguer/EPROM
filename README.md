@@ -411,32 +411,30 @@ The right EPROM is the source EPROM containing all the data that we want to tran
 the target EPROM on the left. 
 The address bus A0 - A14 is common for both EPROM but it is also connected to the 15-bit counter used 
 for incrementing the current addresses where to read the data. 
-The data bus D0 - D7 is also comon to both EPROM and connected to the Multiplexing stage in order to display the 
+The data bus D0 - D7 is also common to both EPROM and connected to the Multiplexing stage in order to display the 
 value loaded on the bus from the source EPROM. 
 
 During the rising edge and the first demi period of the clock signal (CLK), 
-the source EPROM in READ mode, transfer the data to the data bus D0-D7 and at the same time, 
-the destination EPROM is in PROGRAM mode. Please check the table below for the operation modes that 
+the source EPROM is in READ mode, transfer the data to the data bus D0-D7. 
+At the same time, the destination EPROM is in PROGRAM mode. Please check the table below for the operation modes that 
 explain how to set this modes.
 We can see that the EPROM in READ mode will output the data on the data bus **Data out** and the EPROM in 
 PROGRAM mode will receive the data **Data in**
 
-These data are recorder into a 8 bits register made with 2 x 74LS173 IC when a pulse 
-signal (**NOT pulse**) is sent to the common clock of the IC 74LS173 (pin 7). 
+These data D0-D7 are recorder into a 8 bits register made with 2 x 74LS173 IC when a pulse 
+signal (**NOT pulse**) is sent to the common clock of the IC 74LS173 (pin 7) during the READ/PROGRAM MODE sequences
 
-The NOT pulse signal (100us) will push the values present on the data bus D0 - D7 to 
+The NOT pulse signal (100us) will also push the values present on the data bus D0 - D7 to 
 the input Q0 - Q7 of the comparator.
 
-The 74LS173 registers will keep the Byte read from the SOURCE EPROM until the next NOT pulse (next writing period), that byte can then be compared with the TARGET EPROM D0-D7 values during the VERIFY MODE (TARGET EPROM data bus being in **data out** mode)
-
-At the same time a pulse is sent to the EPROM (100us) on NOT CE entry to write the 
-Byte in the TARGET EPROM at the current address A0-A14. 
+The 74LS173 registers will keep the Byte read values from the SOURCE EPROM until the next NOT pulse (next writing period),
+that byte can then be compared with the TARGET EPROM D0-D7 values during the VERIFY MODE (TARGET EPROM data bus being in **data out** mode)
 
 On the falling edge of the main clock cycle, the TARGET EPROM is shifting into the VERIGFY MODE and 
 Q0 - Q7 present the data on the DATA bus (recorded byte), While the source EPROM shift into the STANDBY MODE.
-The Byte from the target EPROM is then compared with the 8-bit register (values present on Q0-Q7)
+The Byte from the target EPROM is then compared with the 8-bit register.
 
-If both Byte are identical the output (pin 19) of the comparator 74LS688 is low otherwise the 
+If both byte values are identical the output (pin 19) of the comparator 74LS688 is low otherwise the 
 output +5V 
 
 
@@ -453,7 +451,7 @@ output +5V
 
 
 The NE555 is used in bistable mode to stop the 15-bit counter when a mismatch error is detected. 
-A mismatch can occure if the Byte copied in the target EPROM differs from the original Byte 
+A mismatch can occure if the byte copied in the target EPROM differs from the original Byte 
 fron the source EPROM during the validation process. If the a mismatch occure, the main counter needs to 
 stop incrementing the address values (A0-A14) in order to perform 3 sequetial retries. 
 The main counter can resume when the mismatch is no longer present or when 3 retries have been done. 
@@ -462,21 +460,22 @@ To resume:
 
 When a mismatch occure, a +5v signal is sent to the NE555 pin 2 (treshold) to set the output Q (pin 3) 
 to a high level +5v (**CounterLock signal**).
-The **CounterLock signal** will stop the main counter to increment the address bus A0 - A14.
+The **CounterLock signal** will stop the main 15-bit counter and stop incrementing the address bus A0 - A14.
 
 As a byte mismatch has occured, the comparator 74ls688 output NOT P=Q will goes high. The AND gate will then 
 change state when NOT CLK goes HIGH (second half of the clock signal period also known as the **VERIFY MODE**). 
-When the AND gate 74ls08 change state, a raising edge signal is sent to the input 1 of the 74LS112 flip flop initiating the counting.
+When the AND gate 74ls08 change state, a raising edge signal is sent to the input 1 of the 74LS112 flip flop initiating the retry count.
 
-Both 74ls112 will count from zero to 3 and will be stopped by a NAND gate (74LS00) connected to both output pin NOT Q0 and Q1 to valid 3 retries). When the flip flop counter stage reaches 3 retries, the 
-NAND gate 74LS00 will trigger a low level signal **loopCount** (see table below) to reset the NE555 oscillator resulting in pin 3 (Q) to change state (signal **CounterLock**).
+Both 74ls112 will count from 0 to 2 and will be stopped by a NAND gate (74LS00) connected to both output pin NOT Q0 and Q1 to valid 3 retries). 
+When the flip flop counter reaches 3 retries, the NAND gate 74LS00 will trigger a low level signal **loopCount** 
+(see table below) to reset the NE555 oscillator resulting in pin 3 (Q) to change state (signal **CounterLock**).
 **CounterLock** signal being now low, the main counter A0-A14 will resume incrementing the address bus
 
 Q0  |  NOT Q0 |  Q1   | LoopCount NOT Q0 & Q1
 ----|---------|-------|--------------------------------
 0   |    1    |   0   |   1
 1   |    0    |   0   |   1 
-0   |    1    |   1   |   0  ==> Third iteration LoopCount = 0V
+0   |    1    |   1   |   0  ==> Third iteration LoopCount = 0V, the low level will trigger a reset.
   
 
 The 360R resistor and the 220pF capacitor connected at the NE555 output pin 3 form a timer with 
@@ -491,25 +490,23 @@ VOH 3.3v (High-level output voltage) NE555
 VIL = VOH * exp(-t/RC)
 t = -RCln(0.8/3.3) and RC = -t/ln(0.8/3.3)
 ```
-We are using a 220pF value and this gives us 112ns delay after the count of 3 by the flip flop 
+We are using a 220pF capacitor value and this gives us 112ns delay after the count of 3 by the flip flop. 
 **LoopCount** signal will remain at a low level during at least 112ns before triggering the reset
  
-Mismatch(output of the comparator) is setting the clock for the loop counting circuit(2x JK flip flop)
-Mismatch output will be set to zero during PROGRAM MODE cycle and set to +5V when the byte mismatch during 
-the VERIFY MODE, creating a raising edge on the flip flop counter. 
+The **Mismatch** signal(output of the comparator 74LS688) is generating a clock signal for the loop counting 
+circuit(2 JK flip flop).
 
-Gate 74LS08 (AND) output is high when both entries are +5V 
-(Byte MISMATCH P!=Q & NOT CLK period raising edge (VERIFIY MODE) 
+**Output of the comparator 74LS688 & AND gate**
   NOT CLK | P=Q! | Mismatch value
   --------|------|--------------
   0       |  0   |   0    ==> CLK = 0V & Byte OK 
-  0       |  1   |   0    ==> CLK = 0V & Byte MISMATCH (PROGRAM MODE)
+  0       |  1   |   0    ==> CLK = 0V & Byte MISMATCH (happen during the PROGRAMMING sequence )
   1       |  0   |   0    ==> CLK = 5V & Byte OK (VERIFY MODE OK)
   1       |  1   |   1    ==> CLK = 5V & Byte MISMATCH (VERIFY MODE NOT OK) loop 3 times
 
 74LS688 Output is high (+5v) when P!=Q
 P=Q output is (0V)
 If the Byte mismatch the output of 74LS688 will remains high and the led will be lit. 
-This scenario can also happen during the PROGRAMA MODE, this is why
-we need to add an AND gate 74LS08 at the output of the comparator
-to lit the led only during the VERIFY MODE when the Byte mismatch.
+This scenario can also happen during the PROGRAMMING MODE, this is why
+we need to add an AND gate 74LS08 at the output of the comparator 
+to lit the led only during the VERIFY MODE when the byte mismatch.
