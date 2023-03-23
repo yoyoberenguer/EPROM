@@ -118,16 +118,21 @@ dissapation of an 1/4W resitor if the output is shorted.
 
 Without Rlim the amount of current flowing through the inverse protection diode 1N5817 will be 
 high and limited only by the bench power supply current carateristic and the diode will certainly break down. 
-For a single 1.5V alkaline battery the max current going through the protection diode will be around 
-100-200mA and within the diode tolerances 
+For a single 1.5V alkaline battery the maximum current going through the protection diode will be around 
+100-200mA and within the diode tolerances. 
 
-The circuit is desiogned with a low voltage detection, the low voltage value is given by 
+The circuit is designed with a low voltage detection, the low voltage value is given by 
+```
 (330K/18K + 1) * 0.212 = 4.09 V
+```
 If the DC supply voltage (VCC) goes below 4.09V the signal LowVoltage_4.1V will be low (and close 
 to zero volts). This signal can be used to determine if the power supply VCC is set correctly set when
 powering up the prototype.
-Output voltage is given by (910K/15K + 1) * 0.212 = 13.1V, the output value may vary with the choice 
-of components. 
+Output voltage is given by:
+```
+(910K/15K + 1) * 0.212 = 13.1V
+```
+The output value may vary with the choice of components. 
 Choose inductor with low ESR.
 All resistors are preferably 1% metal film 1/2W for better output voltage precision
 Toggle_13V is 0/5V signal to enable the 13V output voltage 
@@ -236,9 +241,8 @@ QC and QD from (A) counter are used with an OR GATE SN74LS32 to enable a 2N2222 
 and supply 22mA to the leds (resistor network of 220R).
 
 This false positive occure each time the counters are reset to zero simultinously. 
-At T = 0 when both counters are reset, the outputs QA, QB, QC, QD will all be 
-at low level and will force the result A=B for a fraction of a second, hence raising 
-a false condition A=B (yellow led flickering).
+At T = 0 when both counters are reset, all the outputs QA, QB, QC, QD are equal to zero, resulting in 
+the condition A=B for a fraction of a second, yellow led being turn on.
 
 Choosing the MSB will guarantee the most accurate result since both frequency will diverge 
 significantly for each stages of the SN74LS193.
