@@ -111,10 +111,10 @@ I choose the option 2, since the current requirement used by the prototype was c
 A DC to DC +5v converter build from one or 2 AA battery will produce a maximum current of 200mA and 
 not provide enough current for the prototype.  
 This circuit is protected against the main power supply voltages inversion with the schotky diode 1N5817, 
-therfore the output is not protected against short.If the output is directly connected to the ground
+therefore the output is not protected against short.If the output is directly connected to the ground
 the maximum current will be provided except if RLIM is connected to pin 1 of the LT1073 (Rlim is set to 50 ohms
-and limits the output current).Rlim must be at least 1/2W has the amount current might exceed the power
-dissapation of an 1/4W resitor if the output is shorted.
+and limits the output current).Rlim must be at least 1/2W has the amount of current might exceed the power
+dissipation of an 1/4W resitor if the output is shorted.
 
 Without Rlim the amount of current flowing through the inverse protection diode 1N5817 will be 
 high and limited only by the bench power supply current carateristic and the diode will certainly break down. 
