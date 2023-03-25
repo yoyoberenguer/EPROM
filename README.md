@@ -107,7 +107,7 @@ Two options for the prototype power supply voltage:
     programming mode.
 
 I choose the option 2, since the current requirement used by the prototype was close to 
-200 - 300 mA during the prototype testing (mainly due to 7-seg display and diodes used for the 15-bit counter). 
+200 - 300 mA during testing (mainly due to the 7-seg display and diodes used for the 15-bit counter). 
 A DC to DC +5v converter build from one or 2 AA battery will produce a maximum current of 200mA and 
 not provide enough current for the prototype.  
 This circuit is protected against the main power supply voltages inversion with the schotky diode 1N5817, 
