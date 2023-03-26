@@ -459,8 +459,8 @@ during the **PROGRAM MODE** (first half of the CLK period, when the signal is hi
 is sent at the same time to the target EPROM to write the data from the data bus D0-D7 to the EPROM memory cells and 
 to the registers, pushing and memorizing the original byte.
 In the second half of the CLK signal (when the level is low), the target EPROM is in **VERIFY MODE** (data out) and shows the 
-recorder byte to the data bus D0-D7. The data present on the data bus is the compared using the 74LS688 comparator to determine 
-if the byte recorder within the EPROM is identical to the byte recorded in the 8-bit register.
+recorder byte to the data bus D0-D7. The data present on the data bus is compared using the 74LS688 comparator (input Q) to determine 
+if the byte recorder within the EPROM is identical to the byte recorded in the 8-bit register (input P).
 
 
 The NE555 is used in bistable mode to stop the 15-bit counter when a mismatch error is detected. 
