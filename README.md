@@ -455,10 +455,10 @@ output +5V
 
 The data validation is the circuit checking if the byte copied over to the target EPROM is valid or erroneous. 
 It is build with two 74LS173 (forming a 8-bit D-type register) and a 8-bits comparator 74LS688. The concept is very simple, 
-during the PROGRAM mode (first half of the CLK period, when the signal is high level) a pulse approximatively 100us 
+during the **PROGRAM MODE** (first half of the CLK period, when the signal is high level) a pulse approximatively 100us 
 is sent at the same time to the target EPROM to write the data from the data bus D0-D7 to the EPROM memory cells and 
 to the registers, pushing and memorizing the original byte.
-In the second half of the CLK signal (when the level is low), the target EPROM is in VERIFY MODE (data out) and shows the 
+In the second half of the CLK signal (when the level is low), the target EPROM is in **VERIFY MODE** (data out) and shows the 
 recorder byte to the data bus D0-D7. The data present on the data bus is the compared using the 74LS688 comparator to determine 
 if the byte recorder within the EPROM is identical to the byte recorded in the 8-bit register.
 
