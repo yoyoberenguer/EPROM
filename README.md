@@ -419,7 +419,7 @@ The data bus D0 - D7 is also common to both EPROM and connected to the Multiplex
 value loaded on the bus from the source EPROM. 
 
 During the rising edge and the first demi period of the clock signal (CLK), 
-the source EPROM is in READ mode, transfer the data to the data bus D0-D7. 
+the source EPROM is in READ mode and transfer the data to the data bus D0-D7. 
 At the same time, the destination EPROM is in PROGRAM mode. Please check the table below for the operation modes that 
 explain how to set this modes.
 We can see that the EPROM in READ mode will output the data on the data bus **Data out** and the EPROM in 
