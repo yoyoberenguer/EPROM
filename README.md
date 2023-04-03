@@ -141,6 +141,12 @@ start to drop to VCC or reach VCC if the circuit is turned on.
  
 Required capacitors with low ESR (tantalum preferably) 50V 
 
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/LT1073/DC2DC_converter_board.png?raw=true)
+
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/LT1073/DC2DC_converter.png?raw=true)
+
 ---
 
 ### Programming pulse 
