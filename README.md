@@ -339,9 +339,9 @@ The below diagram represent the 15-bits binary counter (A0-A14) made up from dif
   ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060_Functional_diagram.PNG?raw=true)
 
 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/Counter.PNG?raw=true)
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/counter.png?raw=true)
 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/Counter_composants.PNG?raw=true)
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/counter_composants.png?raw=true)
 
 ---
 
