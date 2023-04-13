@@ -299,7 +299,7 @@ pressed
 
 
 
-The below diagram represent the 15-bits binary counter (A0-A14) made up from different chips 
+The below diagram represent the 15-bits binary counter (A0-A16) made up from different chips 
 
 - SN74F163N (4 bit synchronous counter) flip-flops triggering on the rising (positive-going) edge of CLK.
   The clear function is synchronous, and a low logic level at the clear (CLR) input sets all four of the flip-flop outputs
