@@ -270,7 +270,7 @@ To be noted that:
 
 ### Frequency Generator 
 
-The frequency generator will provide the main frequency needed by the 15-bit counter (A0 - A14) to sequence every possible 
+The frequency generator will provide the main frequency needed by the 17-bit counter (A0 - A16) to sequence every possible 
 addresses on the "address bus".
 As discussed previously, the highest theoritical frequency of an EPROM 27C256 is around 10 Khz (pin 20). 
 The main frequency value will be set for twice the frequency value used by the Pulse generator, the reason will be explain 
@@ -423,7 +423,7 @@ a signal to turn on and off the 7 segments displays alternatively.
 
 The right EPROM is the source EPROM containing all the data that we want to transfer to 
 the target EPROM on the left. 
-The address bus A0 - A14 is common for both EPROM but it is also connected to the 15-bit counter used 
+The address bus A0 - A16 is common for both EPROM but it is also connected to the 15-bit counter used 
 for incrementing the current addresses where to read the data. 
 The data bus D0 - D7 is also common to both EPROM and connected to the Multiplexing stage in order to display the 
 value loaded on the bus from the source EPROM. 
@@ -483,7 +483,7 @@ To resume:
 
 When a mismatch occure, a +5v signal is sent to the NE555 pin 2 (treshold) to set the output Q (pin 3) 
 to a high level +5v (**CounterLock signal**).
-The **CounterLock signal** will stop the main 15-bit counter and stop incrementing the address bus A0 - A14.
+The **CounterLock signal** will stop the main 15-bit counter and stop incrementing the address bus A0 - A16.
 
 As a byte mismatch has occured, the comparator 74ls688 output NOT P=Q will goes high. The AND gate will then 
 change state when NOT CLK goes HIGH (second half of the clock signal period also known as the **VERIFY MODE**). 
