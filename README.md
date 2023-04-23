@@ -417,6 +417,10 @@ a signal to turn on and off the 7 segments displays alternatively.
 **Diagram**
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/Multiplexing_diagram.PNG?raw=true)
 
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/EPROMDisplay.png?raw=true)
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/EPROMDisplay_components.png?raw=true)
+
 ---
 
 ### EPROM flashing 
