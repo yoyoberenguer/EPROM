@@ -465,7 +465,16 @@ output +5V
 
 **Data validation**
 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/Validation_stage.PNG?raw=true)
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/EPROM_ParityCheck_diagram.PNG?raw=true)
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/EPROM_ParityCheck.png?raw=true)
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/EPROM_ParityCheck_components.png?raw=true)
+
+
+
+
 
 The data validation is the circuit checking if the byte copied over to the target EPROM is valid or erroneous. 
 It is build with two 74LS173 (forming a 8-bit D-type register) and a 8-bits comparator 74LS688. The concept is very simple, 
