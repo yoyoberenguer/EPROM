@@ -263,8 +263,11 @@ To be noted that:
  - The pin 11 LOAD is not used and connected to VCC and inputs ABCD are not used and connected to ground 
   
 
-
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/Frequency_comparator_version1.0.PNG?raw=true)
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/EPROM_FrequencyCompare.png?raw=true)
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/EPROM_FrequencyCompare_components.png?raw=true)
 
 ---
 
