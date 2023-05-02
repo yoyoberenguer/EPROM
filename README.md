@@ -151,7 +151,7 @@ Required capacitors with low ESR (tantalum preferably) 50V
 
 ### Programming pulse 
 
-The EPROM SMT27C256 datasheet requires 95 - 100 micro seconds for the chip Enable program pulse width to write
+The EPROM SMT27C256 datasheet define 95 - 100 micro seconds for the chip Enable program pulse width to write
 a single byte. This value may vary for each memory type and device operation mode.
 To comply with a larger number of products, the writing pulse width will be variable to match 
 the component programming requirement.
