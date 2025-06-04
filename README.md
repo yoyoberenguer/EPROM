@@ -44,29 +44,42 @@ We are using the chip LT1073CN8 to provide a voltage around 12.75v.
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/LT1073/LT1073_typical_application.PNG?raw=true)
 
-This component is versatile and easy to setup, just few components needs to be added to provide 
-a steady low ripples DC voltage. The LT1073CN comes into various packages LT1073-5 and LT1073-12 
-including internal resistors R1 and R2 between GND (pin 5) and the SENSE (pin 8) input. 
-However the version LT1073CN8 does not have these resistors and they will be included in our 
-project separately to define the output voltage gain. 
-Advantages of the LT1073CN are the operating voltage range from 1V to 30V, the low battery  
-detection and the optional output current capping
+The **LT1073CN8** is a versatile and easy-to-configure `DC-DC converter`. 
+Only a few external components are required to achieve a stable output voltage with minimal ripple.
 
-This chip works with a wide range of batteries voltage sources such as 1.5V AA alkaline or 
-lithium battery composing a source voltage within 1.5 - 5.5v. 
-In our case, The DC to DC step up converter will be used with a +5V source voltage delivering
-a voltage arround 12.75V with a maximum current of 130mA.
+This device is available in several package variants, such as the LT1073-5 and LT1073-12, which include internal feedback 
+resistors (R1 and R2) connected between **GND** (pin 5) and the **SENSE input** (pin 8). 
+However, the **LT1073CN8** version does not include these internal resistors. 
+In our project, we will add them externally to define the desired output voltage and gain.
 
-The DC to DC converter will be used for the SMT27C256B device programming mode.
-It will supply a steady DC voltage (VPP) range 12.75v ±0.25v to set the EPROM is programming
-mode. Please refer to the datasheet for the absolute VPP voltage values (-2V to 14V for the SMT27C256).
-The reading mode requires 100uA on pin 1 and the programming mode requires 50mA maximum. 
-These current's values (IPP) and the voltage range (VPP) will set the DC to DC step up converter caracteristics 
-for the programming mode.
-The DC to DC converter can also be used for the electronic signature mode, supplying a 12.5 voltage on 
-the address line A9 (pin 24) of the SMT27C256. As the DC converter supply 12.75V a diode will be added to the pin 
-A9 to drop few mV.
- 
+Key advantages of the **LT1073CN8** include:
+
+  . Wide input voltage range: 1V to 30V
+
+  . Built-in low battery detection
+
+  . Optional output current limiting
+
+This makes it well-suited for battery-powered and low-voltage applications where efficiency and reliability are critical.
+
+This chip is compatible with a wide range of battery voltage sources, including 1.5V AA alkaline or lithium cells, typically 
+providing input voltages between **1.5V** and **5.5V**.In our application, the DC-DC step-up converter will operate from 
+a **+5V** input and output approximately **12.75V**, with a maximum load current of **130mA**.
+
+The **DC-DC** converter will be used to supply the programming voltage (V<sub>PP</sub>) required by the **SMT27C256B** device during **programming mode**.
+It provides a stable DC output of **12.75V ±0.25V**, which is within the required range to enable EPROM programming mode.
+
+Please refer to the **SMT27C256** datasheet for the absolute V<sub>PP</sub> voltage ratings, which range from **-2V to 14V**.
+
+- In **read mode**, pin 1 (V<sub>PP</sub>) draws a minimal current of approximately **100µA**.  
+- In **program mode**, the current requirement increases significantly, with a maximum of **50mA**.
+
+These current requirements (**I<sub>PP</sub>**) and the specified voltage range (**V<sub>PP</sub>**) directly determine 
+the performance criteria for the DC-DC step-up converter used during programming.
+
+The DC-DC converter will also support the **electronic signature mode**, which requires a voltage of **12.5V** on the **A9 address line** (pin 24).
+Since the converter outputs **12.75V**, a **diode** will be placed in series with pin A9 to drop the voltage slightly, bringing it closer to the required level.
+  
 To activate the electronic signature mode, the programming equipment must force 11.5V to 12.5V on address line A9 of the
 M27C256B, with VCC = VPP = 5V. Two identifier bytes may then be sequenced from the device out-puts by toggling 
 address line A0 from VIL to VIH . All other address lines must be held at V IL during Electronic Signature mode. 
