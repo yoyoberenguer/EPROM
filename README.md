@@ -595,37 +595,41 @@ This alternating activation is essential for multiplexed display control, reduci
 
 ---
 
-### EPROM flashing 
+### EPROM Flashing Module
 
-The right EPROM is the source EPROM containing all the data that we want to transfer to 
-the target EPROM on the left. 
-The address bus A0 - A16 is common for both EPROM but it is also connected to the 15-bit counter used 
-for incrementing the current addresses where to read the data. 
-The data bus D0 - D7 is also common to both EPROM and connected to the Multiplexing stage in order to display the 
-value loaded on the bus from the source EPROM. 
+In this stage, the **right-hand EPROM** serves as the **source**, containing the data to be copied. The **left-hand EPROM** is the **target**, where the data is written.
 
-During the rising edge and the first demi period of the clock signal (CLK), 
-the source EPROM is in READ mode and transfer the data to the data bus D0-D7. 
-At the same time, the destination EPROM is in PROGRAM mode. Please check the table below for the operation modes that 
-explain how to set this modes.
-We can see that the EPROM in READ mode will output the data on the data bus **Data out** and the EPROM in 
-PROGRAM mode will receive the data **Data in**
+**Shared Buses**
 
-These data D0-D7 are recorder into a 8 bits register made with 2 x 74LS173 IC when a pulse 
-signal (**NOT pulse**) is sent to the common clock of the IC 74LS173 (pin 7) during the READ/PROGRAM MODE sequences
+- The **address bus (A0–A16)** is shared between both EPROMs and is driven by a **15-bit binary counter**, which increments to point to each successive memory address.
+- The **data bus (D0–D7)** is also shared and connects both EPROMs to the **multiplexing stage**, allowing real-time display of the data being transferred.
 
-The NOT pulse signal (100us) will also push the values present on the data bus D0 - D7 to 
-the input Q0 - Q7 of the comparator.
+**Operation Sequence**
 
-The 74LS173 registers will keep the Byte read values from the SOURCE EPROM until the next NOT pulse (next writing period),
-that byte can then be compared with the TARGET EPROM D0-D7 values during the VERIFY MODE (TARGET EPROM data bus being in **data out** mode)
+During the **rising edge and first half** of the clock (CLK) cycle:
+- The **source EPROM** is in **READ mode** and outputs data onto the **data bus (D0–D7)**.
+- Simultaneously, the **target EPROM** is in **PROGRAM mode**, ready to receive this data for writing.
 
-On the falling edge of the main clock cycle, the TARGET EPROM is shifting into the VERIGFY MODE and 
-Q0 - Q7 present the data on the DATA bus (recorded byte), While the source EPROM shift into the STANDBY MODE.
-The Byte from the target EPROM is then compared with the 8-bit register.
+Refer to the mode selection table (not shown here) for specific control pin configurations required to switch between **READ**, **PROGRAM**, and **VERIFY** modes.
 
-If both byte values are identical the output (pin 19) of the comparator 74LS688 is low otherwise the 
-output +5V 
+**Data Transfer and Register Latching**
+
+The data from the **source EPROM** is latched into an **8-bit register** made of two **74LS173 ICs** when a **100 µs active-low pulse **$\overline{Pulse}$** is applied to pin 7 (common clock input).
+
+This same **$\overline{Pulse}$** signal also loads the data into the **Q0–Q7 inputs of the comparator** (e.g., 74LS688), preparing it for the subsequent verification phase.
+
+The **74LS173 registers** retain the byte read from the source until the next write pulse. This byte is then compared to the output of the **target EPROM** during **VERIFY mode**, where both data values are expected to match.
+
+#### Verify Mode (Falling Edge)
+
+On the **falling edge** of the clock:
+- The **target EPROM** switches to **VERIFY mode** and places its output onto the **data bus (D0–D7)**.
+- The **source EPROM** enters **STANDBY mode**.
+
+The value now on the data bus is compared against the latched byte using the **74LS688 comparator**:
+- If the bytes **match**, the comparator output (**pin 19**) goes **LOW** (logical 0).
+- If there is a **mismatch**, the output remains **HIGH** (+5V), indicating a failed programming attempt.
+
 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/27C256_operating_modes.PNG?raw=true)
