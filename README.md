@@ -614,13 +614,13 @@ Refer to the mode selection table (not shown here) for specific control pin conf
 
 **Data Transfer and Register Latching**
 
-The data from the **source EPROM** is latched into an **8-bit register** made of two **74LS173 ICs** when a **100 µs active-low pulse **$\overline{Pulse}$** is applied to pin 7 (common clock input).
+The data from the **source EPROM** is latched into an **8-bit register** made of two **74LS173 ICs** when a **100 µs** active-low pulse **$\overline{Pulse}$** is applied to pin 7 (common clock input).
 
 This same **$\overline{Pulse}$** signal also loads the data into the **Q0–Q7 inputs of the comparator** (e.g., 74LS688), preparing it for the subsequent verification phase.
 
 The **74LS173 registers** retain the byte read from the source until the next write pulse. This byte is then compared to the output of the **target EPROM** during **VERIFY mode**, where both data values are expected to match.
 
-#### Verify Mode (Falling Edge)
+**Verify Mode (Falling Edge)**
 
 On the **falling edge** of the clock:
 - The **target EPROM** switches to **VERIFY mode** and places its output onto the **data bus (D0–D7)**.
@@ -631,94 +631,236 @@ The value now on the data bus is compared against the latched byte using the **7
 - If there is a **mismatch**, the output remains **HIGH** (+5V), indicating a failed programming attempt.
 
 
-
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/27C256_operating_modes.PNG?raw=true)
 
 
-**Source EPROM and Target EPROM (left)**
+**Source EPROM and Target EPROM (left) KICAD schematic**
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/Flashing_diagram.PNG?raw=true)
 
-**Data validation**
+---
 
+## Data validation module KICAD**
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/EPROM_ParityCheck_diagram.PNG?raw=true)
 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/EPROM_ParityCheck.png?raw=true)
 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/EPROM_ParityCheck_components.png?raw=true)
+**Data Validation and Retry Logic**
+
+The **data validation circuit** ensures that each byte written to the target EPROM matches the original byte from the source EPROM. 
+It is implemented using:
+- **Two 74LS173 ICs** (forming an 8-bit D-type register)
+- **One 74LS688** 8-bit comparator
+- **One NE555 timer** in bistable mode
+- **Two 74LS112** JK flip-flops (for retry counting)
+- Logic gates: **74LS08** (AND) and **74LS00** (NAND)
+
+**Write and Verify Phases**
+
+- During the **PROGRAM MODE** (first half of the clock signal, i.e., when **CLK is high**), a ~100 µs **pulse** is sent to:
+  - **Target EPROM** → writes the byte from the data bus (D0–D7)
+  - **74LS173 registers** → latches and stores the original byte
+
+- During the **VERIFY MODE** (second half of the clock, i.e., when **CLK is low**):
+  - The **target EPROM** outputs the recently written byte to the data bus
+  - The **74LS688 comparator** compares this value (input Q) with the stored byte in the 74LS173 registers (input P)
+
+If **P = Q**, the data is valid. If not, a **mismatch** has occurred.
+
+**Error Detection and Retry Mechanism**
+
+To handle possible write errors, the system includes a **retry mechanism with up to 3 attempts** before resuming the flash operation.
+
+**NE555 Bistable Circuit**
+
+- When a **mismatch is detected** (P ≠ Q), the comparator’s output $\overline{P=Q}$ goes **HIGH**
+- This triggers a **+5 V pulse** to pin 2 (**threshold**) of the NE555
+- The NE555 output (pin 3, `Q`) goes **HIGH**, asserting the **`CounterLock`** signal
+- `CounterLock` halts the 15-bit address counter, freezing the increment on the address bus (**A0–A16**)
+
+**Retry Counter Logic**
+
+- The **retry counter** is implemented with **two 74LS112 JK flip-flops**, counting from **0 to 2**
+- The **clock input** to the first JK flip-flop is triggered by an **AND gate (74LS08)** when:
+  - $\overline{P=Q}$ is HIGH **and**
+  - $\overline{CLK}$ is HIGH (second half of the cycle, i.e., **VERIFY MODE**)
+
+- Each mismatch increments the retry counter
+- When **retry count = 3**, both $\overline{Q0}$ and `Q1` outputs go LOW
+- This triggers a **NAND gate (74LS00)**, generating a `loopCount` signal (LOW) that:
+  - **Resets the NE555**, setting its output (Q) **LOW**
+  - Deasserts the `CounterLock` signal
+  - Resumes normal operation of the address counter
+
+**Summary of Signals**
+
+| Signal           | Source         | Description                                                 |
+|------------------|----------------|-------------------------------------------------------------|
+| $\overline{P=Q}$ | 74LS688        | HIGH when mismatch is detected                              |
+| `CounterLock`    | NE555 (Q)      | HIGH to stop address counter; LOW to resume                 |
+| `loopCount`      | 74LS00 NAND    | LOW when retry count = 3, used to reset NE555               |
+| $\overline{CLK}$ | Clock Inverter | High during VERIFY MODE                                     |
+| Retry Counter    | 2× 74LS112     | Counts retry attempts from 0 to 2                           |
 
 
-
-
-
-The data validation is the circuit checking if the byte copied over to the target EPROM is valid or erroneous. 
-It is build with two 74LS173 (forming a 8-bit D-type register) and a 8-bits comparator 74LS688. The concept is very simple, 
-during the **PROGRAM MODE** (first half of the CLK period, when the signal is high level) a pulse approximatively 100us 
-is sent to the target EPROM to write the data from the data bus D0-D7 and 
-to the registers to memorize the original byte.
-In the second half of the CLK signal (when the level is low), the target EPROM is in **VERIFY MODE** (data out) and shows the 
-recorded byte to the data bus D0-D7. The data present on the data bus is compared using the 74LS688 comparator (input Q) to determine 
-if the byte recorder within the EPROM is identical to the byte recorded in the 8-bit register (input P).
-
-
-The NE555 is used in bistable mode to stop the 15-bit counter when a mismatch error is detected. 
-A mismatch can occure if the byte copied in the target EPROM differs from the original Byte 
-fron the source EPROM during the validation process. If the a mismatch occure, the main counter needs to 
-stop incrementing the address values (A0-A14) in order to perform 3 sequetial retries. 
-The main counter can resume when the mismatch is no longer present or when 3 retries have been done. 
-
-To resume: 
-
-When a mismatch occure, a +5v signal is sent to the NE555 pin 2 (treshold) to set the output Q (pin 3) 
-to a high level +5v (**CounterLock signal**).
-The **CounterLock signal** will stop the main 15-bit counter and stop incrementing the address bus A0 - A16.
-
-As a byte mismatch has occured, the comparator 74ls688 output NOT P=Q will goes high. The AND gate will then 
-change state when NOT CLK goes HIGH (second half of the clock signal period also known as the **VERIFY MODE**). 
-When the AND gate 74ls08 change state, a raising edge signal is sent to the input 1 of the 74LS112 flip flop initiating the retry count.
-
-Both 74ls112 will count from 0 to 2 and will be stopped by a NAND gate (74LS00) connected to both output pin NOT Q0 and Q1 to valid 3 retries). 
-When the flip flop counter reaches 3 retries, the NAND gate 74LS00 will trigger a low level signal **loopCount** 
-(see table below) to reset the NE555 oscillator resulting in pin 3 (Q) to change state (signal **CounterLock**).
-**CounterLock** signal being now low, the main counter A0-A14 will resume incrementing the address bus
-
-Q0  |  NOT Q0 |  Q1   | LoopCount NOT Q0 & Q1
+Q0  | $\overline{Q0}$ |  Q1   | LoopCount $\overline{Q0}$ & Q1
 ----|---------|-------|--------------------------------
 0   |    1    |   0   |   1
 1   |    0    |   0   |   1 
 0   |    1    |   1   |   0  ==> Third iteration LoopCount = 0V, the low level will trigger a reset.
-  
 
-The 360R resistor and the 220pF capacitor connected at the NE555 output pin 3 form a timer with 
-a time constant RC. When the voltage accross the Capacitor goes below the low level 
-threshold (VIL) on the reset pin 15 (NOT R) chip 74LS112 both JK flip flops are reset. 
+**RC Reset Timing with NE555 and 74LS112**
 
-Note that the NAND output (**LoopCount**) can be connected directly to the flip flip counters (74LS112) to reset it instantaneously via the reset pin 15 (NOT R) of both chips.However I did not opt for that scenario due to the fact that this will trigger a short low pulse via **LoopCount** at the NAND output with a maximum width of 10-20ns and this signal duration will not be tolerated by the NE555 on pin 4 (reset). The reset event will be ignored by the NE555 due to the signal hold time delay not being sufficient.
-```
-**RC time constant**
-VIL 0.8v (LOW Level Input Voltage)  74LS112 
-VOH 3.3v (High-level output voltage) NE555 
-VIL = VOH * exp(-t/RC)
-t = -RCln(0.8/3.3) and RC = -t/ln(0.8/3.3)
-```
-We are using a 220pF capacitor value and this gives us 112ns delay after the count of 3 by the flip flop. 
-**LoopCount** signal will remain at a low level during at least 112ns before triggering the reset
- 
-The **Mismatch** signal(output of the comparator 74LS688) is generating a clock signal for the loop counting 
-circuit(2 JK flip flop).
+The **360 Ω resistor** and **220 pF capacitor** connected to **pin 3 of the NE555** form a simple RC timing circuit.  
+This creates a time delay that ensures the voltage at the NE555 output decays gradually.
+
+This decay is essential to **reset both JK flip-flops** (74LS112) through their active-low reset pins ($\overline{R}$, pin 15)  
+once the voltage across the capacitor drops below the **TTL low-level input threshold**:
+
+- **V<sub>IL</sub>** = 0.8 (74LS112 low input threshold)
+- **V<sub>OH</sub>** = 3.3 (typical NE555 high-level output)
+- **R** = 360R
+- **C** = 220pf
+
+
+**⚠️ Why Not Direct NAND-to-Reset**
+
+The `LoopCount` signal (output of the NAND gate) can **technically** be wired directly to the $\overline{R}$ inputs of the 74LS112 to reset the JK flip-flops.  
+However, this approach is **not ideal** because:
+
+- The `LoopCount` pulse duration is extremely short — typically **10–20 ns**.
+- This brief pulse is **not recognized** by the NE555's reset pin (pin 4), which requires a longer **low-hold time**.
+
+As a result, **the NE555 may ignore the reset event**, leading to unpredictable circuit behavior.
+
+## RC Time Constant and Discharge Time Calculation
+
+We want to calculate the time it takes for the voltage across a capacitor to drop from a high level \( V_{\text{OH}} \) to the logic low threshold \( V_{\text{IL}} \) of a 74LS112 JK flip-flop.
+
+### Discharge Equation
+
+The voltage across the capacitor over time is given by:
+
+$$
+V(t) = {V_{\text{OH}}} \cdot e^{-t / RC}
+$$
+
+Solving for \( t \) when \( V(t) = **V<sub>IL</sub>** \):
+
+$$
+\begin{aligned}
+V_{\text{IL}} &= V_{\text{OH}} \cdot e^{-t / RC} \\\\
+\frac{V_{\text{IL}}}{V_{\text{OH}}} &= e^{-t / RC} \\\\
+-\frac{t}{RC} &= \ln\left(\frac{V_{\text{IL}}}{V_{\text{OH}}}\right) \\\\
+t &= -RC \cdot \ln\left(\frac{0.8}{3.3}\right)
+\end{aligned}
+$$
+
+### Substituting Values
+
+- R = 360R  
+- C = 220pF
+- **V<sub>IL</sub>** = 0.8V  
+- **V<sub>OH</sub>** = 3.3V
+
+Compute the RC time constant:
+
+$$
+RC = 360 \cdot 220 \times 10^{-12} = 7.92 \times 10^{-8}\ \text{s}
+$$
+
+Now calculate the time:
+
+$$
+t = -7.92 \times 10^{-8} \cdot \ln\left(\frac{0.8}{3.3}\right) \approx 1.12 \times 10^{-7}\ \text{s}
+$$
+
+### Final Answer
+
+$$
+t \approx 112\ \text{ns}
+$$
+
+This delay ensures the reset input of the 74LS112 remains active for a sufficient duration, compensating for the short duration of the `LoopCount` pulse.
+
+
+**Result**
+
+- The RC network introduces a **112 ns delay** after the `LoopCount` signal goes LOW.
+- This ensures the voltage drop across the capacitor is **slow enough to meet NE555 reset timing requirements**.
+- The **reset signal will remain LOW** long enough to reliably trigger both **JK flip-flops**.
+
+**Role of the Comparator**
+
+- The `Mismatch` signal (output of the **74LS688 comparator**) acts as a **clock input** to the flip-flop retry counter.
+- This ensures **loop counting occurs only on verified mismatches** between the source and target EPROMs.
+
+**Summary**
+
+| Signal                 | Purpose                                | Notes                                 |
+|------------------------|----------------------------------------|----------------------------------------|
+| `LoopCount`            | Triggers NE555 reset after 3 retries   | Extended via RC to meet hold timing   |
+| `Mismatch`             | Clocks retry flip-flops                | Initiates retry logic on data error   |
+| NE555 Pin 3            | Drives RC timing circuit               | Delay controls 74LS112 reset logic    |
+| 74LS112 $\overline{R}$ | Flip-flop reset input (active LOW)     | Triggered via RC from NE555           |
+
 
 **Output of the comparator 74LS688 & AND gate**
-  NOT CLK | P=Q! | Mismatch value
-  --------|------|--------------
-  0       |  0   |   0    ==> CLK = 0V & Byte OK 
-  0       |  1   |   0    ==> CLK = 0V & Byte MISMATCH (happen during the PROGRAMMING sequence )
-  1       |  0   |   0    ==> CLK = 5V & Byte OK (VERIFY MODE OK)
-  1       |  1   |   1    ==> CLK = 5V & Byte MISMATCH (VERIFY MODE NOT OK) loop 3 times
+  $\overline{CLK}$ | P=Q! | Mismatch value
+  ----------|------|--------------
+  0         |  0   |   0    ==> CLK = 0V & Byte OK 
+  0         |  1   |   0    ==> CLK = 0V & Byte MISMATCH (happen during the PROGRAMMING sequence )
+  1         |  0   |   0    ==> CLK = 5V & Byte OK (VERIFY MODE OK)
+  1         |  1   |   1    ==> CLK = 5V & Byte MISMATCH (VERIFY MODE NOT OK) loop 3 times
 
-74LS688 Output is high (+5v) when P!=Q
-P=Q output is (0V)
-If the Byte mismatch the output of 74LS688 will remains high and the led will be lit. 
-This scenario can also happen during the PROGRAMMING MODE, this is why
-we need to add an AND gate 74LS08 at the output of the comparator 
-to lit the led only during the VERIFY MODE when the byte mismatch.
+**Comparator Logic and LED Mismatch Indication (74LS688 + 74LS08)**
+
+The **74LS688** comparator outputs a logic level based on the equality of its two 8-bit inputs:
+
+- **Output = LOW (0 V)** when \( P = Q \)
+- **Output = HIGH (+5 V)** when \( P \ne Q \)
+
+In our application:
+
+- **P** is the byte stored from the source EPROM (held in a 74LS173 register)
+- **Q** is the byte read from the target EPROM during **VERIFY MODE**
+
+**⚠️ Problem During PROGRAMMING MODE**
+
+If a mismatch occurs during the **PROGRAMMING MODE**, the comparator output will be **HIGH**.  
+However, at this stage, the data in the target EPROM is still being written and **should not** trigger a mismatch LED.
+
+To prevent false positives during programming, we need to ensure the mismatch indication is **only active** during **VERIFY MODE**.
+
+**Solution Using 74LS08 (AND Gate)**
+
+We add a **74LS08 AND gate** after the output of the 74LS688 comparator.
+
+**Inputs to the AND gate:**
+
+1. Output from 74LS688 (HIGH when \( P \ne Q \))
+2. **$\overline{CLK}$ signal** (HIGH during the VERIFY phase)
+
+**Output of the AND gate:**
+
+- **HIGH** (LED ON) **only if**:
+  - There's a mismatch \( (P \ne Q) \)
+  - The circuit is in **VERIFY MODE** ($\overline{CLK}$ = HIGH)
+
+This ensures the mismatch LED is only lit when a valid verification mismatch is detected.
+
+**Summary**
+
+| Condition             | 74LS688 Output |  $\overline{CLK}$ (Verify Mode)  | LED (via 74LS08) |
+|-----------------------|----------------|----------------------------------|------------------|
+| P = Q (match)         | LOW (0 V)      | Any                              | OFF              |
+| P ≠ Q during Program  | HIGH (+5 V)    | LOW                              | OFF              |
+| P ≠ Q during Verify   | HIGH (+5 V)    | HIGH                             | **ON**           |
+
+This design prevents false mismatch indications and ensures that the LED only lights when the byte validation truly fails during verification.
+
+## Data validation PCB (THT)
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/EPROM_ParityCheck.png?raw=true)
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/EPROM_flashing/EPROM_ParityCheck_components.png?raw=true)
+
