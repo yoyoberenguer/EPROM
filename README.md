@@ -205,7 +205,7 @@ $$
 
 This design ensures accurate voltage detection and reliable control over the high-voltage output.
 
-### DC to DC converter version 1.0 PCB
+### DC to DC converter PCB (THT)
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/LT1073/DC2DC_converter_board.png?raw=true)
 
@@ -341,97 +341,105 @@ This gating ensures that a valid frequency comparison is only displayed when the
 
  ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/74LS193_pinout.PNG?raw=true)
 
-#### Additional Notes
-
-- The **SN74LS85** (16-pin magnitude comparator) does **not** include an enable pin. It continuously compares both input values in real time.
-- The **SN74LS08** (AND gate) and **SN74LS04** (inverter) can optionally be replaced with a single **NAND gate** for logic simplification, depending on the logic level inversion required.
-- **Pin 11 (LOAD)** on the SN74LS85 is **unused** in this design and should be connected to **V<sub>CC</sub>** to ensure proper logic level.
-- The **ABCD parallel data inputs** of the SN74LS85 are also **not used** and must be tied to **ground** to avoid floating inputs and potential erratic behavior.
+> **Additional Notes**
+>
+>- The **SN74LS85** (16-pin magnitude comparator) does **not** include an enable pin. It continuously compares both input values in real time.
+>- The **SN74LS08** (AND gate) and **SN74LS04** (inverter) can optionally be replaced with a single **NAND gate** for logic simplification, depending on the logic level inversion required.
+>- **Pin 11 (LOAD)** on the SN74LS85 is **unused** in this design and should be connected to **V<sub>CC</sub>** to ensure proper logic level.
+>- The **ABCD parallel data inputs** of the SN74LS85 are also **not used** and must be tied to **ground** to avoid floating inputs and potential erratic behavior.
 
 
 ## Frequence comparator KICAD
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/Frequency_comparator_version1.0.PNG?raw=true)
 
-## Frequence comparator PCB
+## Frequence comparator PCB (THT)
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/EPROM_FrequencyCompare.png?raw=true)
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20Comparator/EPROM_FrequencyCompare_components.png?raw=true)
 
 ---
 
-### Frequency Generator 
+### Frequency Generator module
 
-The frequency generator will provide the main frequency needed by the 17-bit counter (A0 - A16) to sequence every possible 
-addresses on the "address bus".
-As discussed previously, the highest theoritical frequency of an EPROM 27C256 is around 10 Khz (pin 20). 
-The main frequency value will be set for twice the frequency value used by the Pulse generator, the reason will be explain 
-in the next electronic stage (Frequency multiplexer)
+The frequency generator provides the **main clock signal** required by the **17-bit counter** (A0–A16) to sequentially address every possible location on the EPROM’s address bus.
+As discussed previously, the theoretical maximum programming frequency for a **27C256 EPROM** is approximately **10 kHz** (determined by pin 20 timing requirements).  
+To ensure proper synchronization with the **pulse generator**, the main clock frequency will be set to **twice** the value of the pulse generator frequency. The rationale for this
+will be explained in the next stage: **Frequency Multiplexer**.
 
-The prototype will have different customizable frequency sources to help troobleshooting.
+**Clock Source Flexibility**
 
-The board will be designed with a Schmitt trigger oscillator with an adjustable resistor to have a wide range of 
-frequencies available (time constant given by R1 x C1).
+To assist in debugging and testing, the prototype includes **multiple customizable frequency sources**. The board is designed to support:
 
-A (32768khz) quarkz frequency oscillator using a Schmitt trigger CD40106BE chip. 
-(If you are not using a schmitt trigger, add 2 resistors 47k feeding the +VCC and ground of the IC power supply and  
-add an extra inverter to reshape the signal).  
+- A **Schmitt trigger oscillator** with an **adjustable resistor** for wide frequency tuning.  
+  The frequency is determined by the **time constant**: `(R1 × C1)`
+  
+- A **32.768 kHz quartz crystal oscillator** built using a **CD40106BE** Schmitt trigger inverter.  
+  If a Schmitt trigger is not used, you must:
+  - Add **two 47 kΩ resistors** to bias the input between **V<sub>CC</sub>** and **GND**
+  - Add an **extra inverter stage** to reshape the output waveform for a clean digital signal
 
+These options provide a flexible and stable timing base for both normal operation and troubleshooting scenarios.
+
+### Frequency generator KICAD 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20generator/Frequency_generator.PNG?raw=true)
 
-And finally a step by step clock generator to troobleshoot on demand, a pulse is generated each time the contact SW1 is 
-pressed 
+And finally a step by step clock generator to troobleshoot on demand, a pulse is generated each time the contact **SW1** is pressed 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Frequency%20generator/Manual_clock_pulse.PNG?raw=true)
 
 ---
 
-### Binary Counter 
+## Binary Counter module
 
+The diagram below represents the **17-bit binary counter** (A0–A16) constructed from multiple integrated circuits:
 
+- **SN74F163N**: A 4-bit synchronous binary counter with flip-flops triggered on the **rising (positive-going) edge** of the clock (CLK).  
+  The **clear (CLR)** function is synchronous: applying a **low logic level** to CLR sets all four flip-flop outputs to low (0000) after
+  the next rising clock edge, regardless of the enable inputs (ENP and ENT).  
 
-The below diagram represent the 17-bits binary counter (A0-A16) made up from different chips 
+This synchronous clear feature allows easy modification of the count length by decoding the Q outputs for the desired maximum count.
+An active-low gate output from this decoder is fed back to the CLR input to synchronously reset the counter to zero (0000).
 
-- SN74F163N (4 bit synchronous counter) flip-flops triggering on the rising (positive-going) edge of CLK.
-  The clear function is synchronous, and a low logic level at the clear (CLR) input sets all four of the flip-flop outputs
-  to low after the next low-to-high transition of the clock, regardless of the levels of ENP and ENT. This
-  synchronous clear allows the count length to be modified easily by decoding the Q outputs for the maximum
-  count desired. The active-low output of the gate used for decoding is connected to the clear input to
-  synchronously clear the counter to 0000 (LLLL).
-  
-  ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/SN74f163_pinout.PNG?raw=true)
-  
-  
- - DM74LS112A (Dual Negative-Edge-Triggered Master-Slave J-K Flip-Flop) with Preset, Clear, and Complementary Outputs
-   This device contains two independent negative edge triggered J-K flip-flops with complementary outputs.
+**SN74F163N pinout**
 
-- HEF4060B is a 14-stage ripple-carry binary counter/divider and oscillator with three
-  oscillator terminals (RS, REXT and CEXT), ten buffered outputs (Q3 to Q9 and Q11 to Q13) and an overriding asynchronous 
-  master reset input (MR). As shown in the functional diagram and the pinout circuit the outputs Q0, Q1, Q2, Q10 are 
-  missing from the chip and would have to be build separately in our design.
-  The external oscillator (RS, REXT and CEXT) will be disregarded and we will use an external oscillator to cadence the 
-  HEF4060B and the remaining flip flops & 4 - bit counter (SN74F163N)
-  
- To be noted:
- * SN74F163N flip flops trigger on rising edge while the DM74LS112A & HEF4060B are negative edge triggering, this is 
-   important to know in order to avoid a de-synchronization of the address bus through out the bits Q0-Q2, Q10, Q14, Q15.
- * Extra JK flip flop outputs Q10, Q14, Q15 added to the counter are build in asynchronous mode contrasting with 
-   (HEF4060B & SN74F163N).This minor change will not affect the binary count and address frequencies. 
- * Q15 is hight when the count has reached the last address 7FFF (EPROM 256K), Q16 is reserved for 512K EPROM (version 2.0). 
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/SN74f163_pinout.PNG?raw=true)
+
+- **DM74LS112A**: Dual Negative-Edge-Triggered Master-Slave J-K Flip-Flop with Preset, Clear, and Complementary Outputs.  
+  This device contains two independent negative-edge-triggered J-K flip-flops with complementary outputs.
+
+- **HEF4060B**: A 14-stage ripple-carry binary counter/divider and oscillator featuring three oscillator terminals (RS, REXT, CEXT), ten buffered outputs (**Q3–Q9** and **Q11–Q13**), and an asynchronous master reset input (MR).  
+  Note that outputs **Q0, Q1, Q2, and Q10** are **not** available internally and must be implemented separately in our design.  
+  The internal oscillator (RS, REXT, CEXT) will be bypassed in favor of an **external oscillator** to clock the HEF4060B, along with the remaining flip-flops and the 4-bit counter (SN74F163N).
+
+> **Important Notes**
+>
+>- The **SN74F163N** flip-flops trigger on the **rising edge** of the clock, whereas both the **DM74LS112A** and **HEF4060B** are triggered on the **falling (negative) edge**.  
+>  This timing difference is critical to prevent desynchronization of the address bus bits **Q0–Q2, Q10, Q14, and Q15**.
+>
+>- The extra JK flip-flop outputs for **Q10, Q14, and Q15** are implemented asynchronously, in contrast to the synchronous operation of the HEF4060B and SN74F163N.  
+>  This minor asynchronous mode difference does **not** affect the accuracy of the binary counting or the address bus frequencies.
+>
+>- **Q15** goes high when the count reaches the last address **0x7FFF** (corresponding to the 256K EPROM boundary).  
+>  The **Q16** bit is reserved for addressing the 512K EPROM in **version 2.0** of the design.
  
  
-  HEF4060 pinout 
+**HEF4060 pinout**
   
-  ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060B_pinout.PNG?raw=true)
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060B_pinout.PNG?raw=true)
 
-  HEF4060 functional diagram 
-  
-  * Note that the outputs Q0 - Q2, Q10 are missing from the functional diagram 
-  ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060_Functional_diagram.PNG?raw=true)
+**HEF4060 functional diagram** 
 
+> Note that the outputs Q0 - Q2, Q10 are missing from the functional diagram
+
+![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/HEF4060_Functional_diagram.PNG?raw=true)
+
+## Binary Counter KICAD 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/Kicad_CounterSchematic.PNG?raw=true)
+
+## Binary Counter PCB (THT)
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Counter/counter.png?raw=true)
 
@@ -439,51 +447,73 @@ The below diagram represent the 17-bits binary counter (A0-A16) made up from dif
 
 ---
 
-### Display multiplexer 7-segments
+## Display Multiplexer – 7-Segment Module
+
+This module handles **7-segment display multiplexing** to visualize the memory content copied to the target EPROM. It presents **16 bits (2 bytes)** of data from the address lines (A0–A14) in hexadecimal format using two 7-segment digits.
+
+**Functionality**
+
+Each byte of memory on the data bus (D0–D7) is split into two **nibbles**:
+
+- **Lower nibble (D0–D3)**: Represents the least significant 4 bits of the byte.
+- **Upper nibble (D4–D7)**: Represents the most significant 4 bits.
+
+For example, if the source EPROM at address `$0000` contains the value `$0A` (binary `00001010`):
+
+- D0–D3 = `1010` → hexadecimal digit **A**
+- D4–D7 = `0000` → hexadecimal digit **0**
+
+**Components**
+
+- **74LS157 (Quad 2-to-1 Multiplexer)**  
+  This chip splits the data byte (D0–D7) into two separate nibbles. It selects either the LSB (D0–D3) or the MSB (D4–D7) for output via pins **Za, Zb, Zc, Zd**.
+  
+- **EPROM 27C256**  
+  Acts as a **BCD to 7-segment decoder**. The nibble from the 74LS157 is sent to the EPROM via address inputs **A0–A3**, which select the corresponding segment pattern stored in the EPROM's memory.  
+  The higher address lines (**A4–A14**) are forced to logic low (`0`) to target the lower address range of the EPROM.
+
+**Memory Mapping for Display**
+
+- EPROM addresses **$0000 to $0010** store the 7-segment display codes for hexadecimal digits `0–F`, assuming a **common cathode** display.
+- Optionally, addresses **$0010 to $0020** can store codes for a **common anode** version.
+
+A **toggle switch** can be connected to address line **A4** to switch between display types:
+
+- A4 = 0 → Common Cathode
+- A4 = 1 → Common Anode
+
+This allows selecting the display type at runtime by applying **GND or +5V** to A4.
+
+> **Note**
+>
+>The EPROM must be pre-programmed with appropriate 7-segment patterns corresponding to each hexadecimal digit.
+>  Each entry should also account for optional **decimal point** activation, depending on your segment wiring.
 
 
-7 Segements multiplexing. 
+**Example**
 
-Display the memory content `COPIED OVER` to the target EPROM (16 bits, 2 bytes) from the address lines (A0-A14). 
-The byte is present on the 8 bits data lines (first 4 LSB bits D0-D3 represent the first byte (char)
-and last 4 bits MSB (D4-D7) for the last char.
+If address `$0000` contains the code for digit **0**, and address `$000A` contains the code for digit **A**, the two-digit 7-segment display will show "A0" for the byte `$0A`.
 
-For example, if the source EPROM address $0000 contains the value $0A (#00001010 in binary), 
-D0-D3 (#1010) will represent the hex value A and D4-D7 the hex value 0 (#0000).
+> 📌 Ensure that the 7-segment display type (common anode or cathode) matches the logic stored in the EPROM. Mismatched logic may invert segments and display incorrect values.
 
-The chip 74LS157 is a quad 2 inputs multiplexer allowing to split the data present on the data bus D0-D7 
-into two nibbles of data, the less significant bits (D0-D3) and the most significant bit (D4-D7).
-
-74LS157 outputs (Za, Zb, Zc, Zd) are connected to the EPROM decoder via (A0-A3) to convert the decimal value into 
-an hexadecimal charactere (0-F). The chip 27C256 act as an BCD to 7-segment Display Decoders and map a decimal value to 
-its equivalent in hexadecimal.The rest of the addresse lines on the EPROM are set to zero e.g (A4-A14, not used and forced to zero). 
-
-The first 32 bytes of the EPROM (addresses $00000000 - $00000010) are encoded to represent the hexadecimal 
-value 0 to F (7 segments representation of the decimal value present on the address line A0-A3, including 
-the decimal point).
-
-The value must take into consideration the type of 7-seg display (common cathode or comon anode)
-PS Adresses $00000010 - $00000020 can also be populated with 7 segments code for common anode) if this is the case, 
-we can add an single switch to set +5/GND logic 1 or zero to the EPROM A4 input that way, the switch will toggle between
-comon cathode or comon anode displays.
-
-For example: 
-The below image represent the data of an EPROM addresses from $00000000 to $00000010, the data map the conversion
-BCD to hex representation on an 7-segment display
-
-**comon cathode**
+**comon cathode representing the address system (see table below)**
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD%207-seg%20decoder.PNG?raw=true)
 
-**comon anode** 
+**comon anode representing the address system (see table below)** 
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD%207-seg%20decoder_comon_anode.PNG?raw=true)
 
-The table below represent the addresse lines A0 - A4 and the 7-segements decoding. 
-The first part of the table is the decoding for comon cathode display and the second part addresses starting 
-at 00000010 to 0000001F is the decoding for comon anode.
+## 7-Segment Decoding Table – Common Cathode vs Common Anode
 
-![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/BCD-7Segments.PNG?raw=true)
+The table below represents the **address lines A0–A4** and their corresponding **7-segment display encodings** stored in the EPROM. The 7-segment codes are used to visually display hexadecimal values (`0`–`F`) on a display module.
+
+- **Addresses $0000 to $000F** contain the segment codes for **common cathode** displays.
+- **Addresses $0010 to $001F** contain the segment codes for **common anode** displays.
+
+A toggle switch connected to **address line A4** can be used to select between the two types of display:
+- A4 = `0` → Common Cathode
+- A4 = `1` → Common Anode
 
 **EPROM outputs connection with 7-segment display:**
 
@@ -498,17 +528,67 @@ at 00000010 to 0000001F is the decoding for comon anode.
 **g**              | D6
 **dot**            | D7
 
-Both 7 segs displays are common anode, each displays will be lit during a short period
-when a signal is sent (+5V) to the corresponding transistor to turn on the display. 
-As the transistors Q2 and Q4 are connected to Q and NOT Q they will be operational at different time.
-CLK must be > 60hz to avoid flickering between the 7-segs HDSP-7501
+**Common Cathode**
+| Addr (hex) | A4 | A3–A0 | Hex Digit | Segments (a–h) | Binary   | Hex Code |
+|------------|----|--------|-----------|----------------|----------|----------|
+| 0x00       | 0  | 0000   | 0         | abcdef         | 11111100 | 0xF6     |
+| 0x01       | 0  | 0001   | 1         | bc             | 01100000 | 0x60     |
+| 0x02       | 0  | 0010   | 2         | abdeg          | 11011010 | 0xDA     |
+| 0x03       | 0  | 0011   | 3         | abcdg          | 11110010 | 0xF2     |
+| 0x04       | 0  | 0100   | 4         | bcfg           | 01100110 | 0x66     |
+| 0x05       | 0  | 0101   | 5         | acdfg          | 10110110 | 0xB6     |
+| 0x06       | 0  | 0110   | 6         | acdefg         | 10111110 | 0xBE     |
+| 0x07       | 0  | 0111   | 7         | abc            | 11100000 | 0xE0     |
+| 0x08       | 0  | 1000   | 8         | abcdefg        | 11111110 | 0xFE     |
+| 0x09       | 0  | 1001   | 9         | abcdfg         | 11110110 | 0xF6     |
+| 0x0A       | 0  | 1010   | A         | abcefg         | 11101110 | 0xEE     |
+| 0x0B       | 0  | 1011   | B         | cdefg          | 00111110 | 0x3E     |
+| 0x0C       | 0  | 1100   | C         | adef           | 10011100 | 0x9C     |
+| 0x0D       | 0  | 1101   | D         | bcdeg          | 01111010 | 0x7A     |
+| 0x0E       | 0  | 1110   | E         | adefg          | 10011110 | 0x9E     |
+| 0x0F       | 0  | 1111   | F         | aefg           | 10001110 | 0x8E     |
 
-The IC 74LS112 (JK flip flop) is producing a clock signal (half of the CLK frequency) and provide
-a signal to turn on and off the 7 segments displays alternatively.
+**Common Anode**
+| Addr (hex) | A4 | A3–A0 | Hex Digit | Segments (a–h) | Binary   | Hex Code |
+|------------|----|--------|-----------|----------------|----------|----------|
+| 0x10       | 1  | 0000   | 0         | abcdef         | 00000011 | 0x03     |
+| 0x11       | 1  | 0001   | 1         | bc             | 10011111 | 0x9F     |
+| 0x12       | 1  | 0010   | 2         | abdeg          | 00100101 | 0x25     |
+| 0x13       | 1  | 0011   | 3         | abcdg          | 00001101 | 0x0D     |
+| 0x14       | 1  | 0100   | 4         | bcfg           | 10011001 | 0x99     |
+| 0x15       | 1  | 0101   | 5         | acdfg          | 01001001 | 0x49     |
+| 0x16       | 1  | 0110   | 6         | acdefg         | 01000001 | 0x41     |
+| 0x17       | 1  | 0111   | 7         | abc            | 00011111 | 0x1F     |
+| 0x18       | 1  | 1000   | 8         | abcdefg        | 00000001 | 0x01     |
+| 0x19       | 1  | 1001   | 9         | abcdfg         | 00001001 | 0x09     |
+| 0x1A       | 1  | 1010   | A         | abcefg         | 00010001 | 0x11     |
+| 0x1B       | 1  | 1011   | B         | cdefg          | 11000001 | 0xC1     |
+| 0x1C       | 1  | 1100   | C         | adef           | 01100011 | 0x63     |
+| 0x1D       | 1  | 1101   | D         | bcdeg          | 10000101 | 0x85     |
+| 0x1E       | 1  | 1110   | E         | adefg          | 01100001 | 0x61     |
+| 0x1F       | 1  | 1111   | F         | aefg           | 01110001 | 0x71     |
 
-**Diagram**
+
+> 🔧 **Note**: The 7-segment codes are provided in hexadecimal and may vary depending on the display wiring (a–g segments + DP). Adjust accordingly if decimal points are used.
+
+This design provides full compatibility with both **common cathode** and **common anode** displays by using a simple logic-level switch and preloaded EPROM codes.
+
+**7-Segment Display Multiplexing**
+
+Both 7-segment displays used in this design are common anode type. Each display is activated briefly by supplying a **V<sub>CC</sub>** +5V control signal to its corresponding transistor switch, 
+enabling the current flow through the display.The transistors **Q2** and**Q4** are connected respectively to the **Q** and **$\overline{Q}$** outputs of a JK flip-flop **74LS112**.
+This configuration ensures that the two displays are activated alternately, never simultaneously. As a result, each display lights up only during its assigned clock phase.
+
+To avoid visible flickering, the clock frequency driving the multiplexing should be greater than **60 Hz**. This ensures that the displays are refreshed quickly enough for human perception, creating a smooth visual appearance.
+
+The 74LS112 JK flip-flop is used to divide the main clock frequency by two, generating a toggling signal that alternately enables one display and then the other. 
+This alternating activation is essential for multiplexed display control, reducing the number of required data lines while maintaining visual clarity.
+
+
+### 7-Segment Module KICAD
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/Multiplexing_diagram.PNG?raw=true)
 
+### 7-Segment Module PCB (THT) 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/EPROMDisplay.png?raw=true)
 
 ![image](https://github.com/yoyoberenguer/EPROM/blob/main/Multiplexing/EPROMDisplay_components.png?raw=true)
